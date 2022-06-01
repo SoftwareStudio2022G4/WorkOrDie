@@ -18,7 +18,6 @@ import com.example.workordie.ui.theme.WorkOrDieTheme
 
 /* Not yet done:
 *  Top bar
-*  Add subtasks should be '+' icon
 *  cant work now,it's only ui
 * */
 @Composable
@@ -75,7 +74,7 @@ fun AddTaskBody(){
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun AddTaskPreview() {
     WorkOrDieTheme {
         AddTaskBody()
     }
