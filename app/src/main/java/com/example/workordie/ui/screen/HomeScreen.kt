@@ -35,7 +35,7 @@ fun Home(navController : NavController){
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            MyTopBar(scaffoldState = scaffoldState, scope = scope)
+            HomeTopBar(scaffoldState = scaffoldState, scope = scope)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -54,13 +54,13 @@ fun Home(navController : NavController){
             BodyContent()
         },
         bottomBar = {
-            MyBottomBar()
+            HomeBottomBar()
         }
     )
 }
 
 @Composable
-fun MyTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
+fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
     val drawerState = scaffoldState.drawerState
 
     TopAppBar(
@@ -104,7 +104,7 @@ fun DrawerContent(){
 
 //pass navcontroller here after creating the following 3 pages
 @Composable
-fun MyBottomBar(){
+fun HomeBottomBar(){
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 10.dp
