@@ -20,7 +20,7 @@ the info box between subtasks and done button
 * */
 
 @Composable
-fun FinishPopupBody(){
+fun FinishPopup(){
     Column(
         modifier = Modifier.padding(30.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -58,6 +58,7 @@ fun FinishPopupBody(){
 
         //TODO: info box here
 
+        //will handle onclick event after finish designing the counting time screen
         Button(
             onClick = { /*TODO*/ }
         ) {
@@ -74,6 +75,6 @@ fun FinishPopupBody(){
 @Composable
 fun FinishPopupPreview() {
     WorkOrDieTheme {
-        FinishPopupBody()
+        FinishPopup()
     }
 }

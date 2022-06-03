@@ -8,18 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.workordie.ui.theme.WorkOrDieTheme
+import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-/* reference link:
+/* Scaffold reference link:
 https://www.jetpackcompose.net/scaffold
 https://www.youtube.com/watch?v=UDW4v88V41M
 * */
@@ -32,7 +29,7 @@ body content
 * */
 
 @Composable
-fun HomeBody(){
+fun Home(navController : NavController){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     val scope : CoroutineScope = rememberCoroutineScope()
     Scaffold(
@@ -41,7 +38,9 @@ fun HomeBody(){
             MyTopBar(scaffoldState = scaffoldState, scope = scope)
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}){
+            FloatingActionButton(
+                onClick = { navController.navigate(NavScreen.AddTask.route) }
+            ){
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "fab icon"
@@ -103,6 +102,7 @@ fun DrawerContent(){
     Text(text = "Drawer Menu 1")
 }
 
+//pass navcontroller here after creating the following 3 pages
 @Composable
 fun MyBottomBar(){
     val selectedIndex = remember { mutableStateOf(0) }
@@ -159,10 +159,11 @@ fun MyBottomBar(){
 }
 
 
-@Preview(showBackground = true)
+//Don't uncomment here, since Home() needs a parameter
+/*@Preview(showBackground = true)
 @Composable
 fun HomePreview() {
     WorkOrDieTheme {
-        HomeBody()
+        Home()
     }
-}
+}*/
