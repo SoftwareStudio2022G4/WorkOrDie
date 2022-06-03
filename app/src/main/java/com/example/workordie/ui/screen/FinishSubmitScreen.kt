@@ -3,33 +3,37 @@ package com.example.workordie.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.workordie.ui.theme.WorkOrDieTheme
+import androidx.navigation.NavController
+import com.example.workordie.ui.theme.Yellow100
 
 /* TODO
-the background color of subtask 1 to 3
+need a better format
 * */
 
 @Composable
-fun FinishSubmitBody(){
+fun FinishSubmit(navController: NavController){
     Column(
-        modifier = Modifier.padding(30.dp),
+        modifier = Modifier.padding(120.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "You've added a new task")
+        Text(
+            text = "You've added a new task",
+            fontSize = 28.sp
+        )
 
         Text(
             text = "<HW name>",
-            fontSize = 25.sp
+            fontSize = 36.sp
         )
 
         Text(
@@ -37,16 +41,28 @@ fun FinishSubmitBody(){
         )
 
         for (i in 1..3){
-            Text(
-                text = "subtask $i"
-            )
+            Surface(
+                color = Yellow100
+            ) {
+                Text(
+                    text = "subtask $i"
+                )
+            }
         }
 
         //add some space between subtasks and button
         Spacer(modifier = Modifier.height(60.dp))
 
+        //after pressing Done button,we should pop all screens including Home screen in the backstack
+        //then we can navigate to Home screen
         Button(
-            onClick = { /*TODO*/ }
+            onClick = {
+                navController.navigate(NavScreen.Home.route){
+                    popUpTo(NavScreen.Home.route){
+                        inclusive = true
+                    }
+                }
+            }
         ) {
             Text(text = "Done")
             Icon(
@@ -57,10 +73,10 @@ fun FinishSubmitBody(){
     }
 }
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun FinishSubmitPreview() {
     WorkOrDieTheme {
-        FinishSubmitBody()
+        FinishSubmit()
     }
-}
+}*/

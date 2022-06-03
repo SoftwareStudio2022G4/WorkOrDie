@@ -5,25 +5,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.workordie.ui.theme.WorkOrDieTheme
+import androidx.navigation.NavController
 
 
 /* Not yet done:
 *  Top bar
-*  cant work now,it's only ui
+*  cant input now,it's only ui
 * */
 @Composable
-fun AddTaskBody(){
+fun AddTask(navController: NavController){
     Column(
-        modifier = Modifier.padding(30.dp),
+        modifier = Modifier.padding(70.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ){
         Text(
@@ -32,29 +29,34 @@ fun AddTaskBody(){
             fontSize = 36.sp
         )
         OutlinedTextField(
-            value = "機率",
+            value = "",
             onValueChange = { },
-            label = { Text(text = "Name") }
+            label = { Text(text = "Name") },
+            placeholder = { Text(text = "機率") }
         )
         OutlinedTextField(
-            value = "作業",
+            value = "",
             onValueChange = { },
-            label = { Text(text = "Type") }
+            label = { Text(text = "Type") },
+            placeholder = { Text(text = "作業") }
         )
         OutlinedTextField(
-            value = "5/30",
+            value = "",
             onValueChange = { },
-            label = { Text(text = "Deadline") }
+            label = { Text(text = "Deadline") },
+            placeholder = { Text(text = "5/30") }
         )
         OutlinedTextField(
-            value = "5",
+            value = "",
             onValueChange = { },
-            label = { Text(text = "Estimated Time to Finish(in hour)") }
+            label = { Text(text = "Estimated Time to Finish(in hour)") },
+            placeholder = { Text(text = "5") }
         )
         OutlinedTextField(
-            value = "5/20",
+            value = "",
             onValueChange = { },
-            label = { Text(text = "Estimated Start Date") }
+            label = { Text(text = "Estimated Start Date") },
+            placeholder = { Text(text = "5/20") }
         )
         OutlinedTextField(
             value = "+",
@@ -62,7 +64,7 @@ fun AddTaskBody(){
             label = { Text(text = "Add subtasks") }
         )
         Button(
-            onClick = {  },
+            onClick = { navController.navigate(NavScreen.FinishSubmit.route) },
             modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
         ) {
             Text(text = "submit")
@@ -72,10 +74,10 @@ fun AddTaskBody(){
 }
 
 
-@Preview(showBackground = true)
+/*@Preview(showBackground = true)
 @Composable
 fun AddTaskPreview() {
     WorkOrDieTheme {
-        AddTaskBody()
+        AddTask()
     }
-}
+}*/
