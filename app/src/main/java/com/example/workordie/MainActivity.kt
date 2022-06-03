@@ -44,6 +44,9 @@ fun WorkorDieApp(){
         composable(route = NavScreen.Home.route){
             Home(navController = navController)
         }
+        composable(route = NavScreen.AllTasks.route){
+            AllTasks(navController = navController)
+        }
         composable(route = NavScreen.AddTask.route){
             AddTask(navController = navController)
         }

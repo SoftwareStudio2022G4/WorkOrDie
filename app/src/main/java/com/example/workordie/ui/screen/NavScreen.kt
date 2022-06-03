@@ -8,4 +8,5 @@ sealed class NavScreen(val route : String) {
     object FinishSubmit : NavScreen("finish_submit")
     object CountingTime : NavScreen("counting_time")
     object profile : NavScreen("profile")
+    object AllTasks : NavScreen("all_tasks")
 }
