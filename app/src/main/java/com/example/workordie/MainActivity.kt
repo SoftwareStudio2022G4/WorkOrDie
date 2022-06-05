@@ -56,6 +56,9 @@ fun WorkorDieApp(){
         composable(route = NavScreen.FinishPopup.route){
             FinishPopup()
         }
+        composable(route = NavScreen.CountingTime.route){
+            CountingTime()
+        }
     }
 
 }
