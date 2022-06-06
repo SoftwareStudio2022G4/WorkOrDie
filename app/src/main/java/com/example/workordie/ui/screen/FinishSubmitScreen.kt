@@ -3,52 +3,56 @@ package com.example.workordie.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.workordie.ui.theme.Blue900
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import com.example.workordie.ui.theme.Yellow100
 
 /* TODO
 Background color
-Boxes of subtask 1 to 3
 onclick button
 Font, font size
 * */
-//@PreviewParameter
+//@Preview
 @Composable
 fun FinishSubmit(navController: NavController){
-        Column(
-        modifier = Modifier.padding(30.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier.padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+
     ) {
         Text(
             text = "You've added a new task",
-            fontSize = 28.sp
+            fontSize = 20.sp
         )
         Text(
             text = "<HW name>",
-            fontSize = 36.sp
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Medium
         )
         Text(
-            text = "with subtasks below:"
+            text = "with subtasks below:",
+            fontSize = 20.sp
         )
-            WorkOrDieTheme{
+            /*WorkOrDieTheme{
                 Subtasks()
-            }
-        /*for (i in 1..3){
-            Text(
-                text = "subtask $i"
-            )
-        }*/
+            }*/
+            Subtasks()
         //add some space between subtasks and button
         Spacer(modifier = Modifier.height(60.dp))
 
@@ -70,10 +74,10 @@ fun FinishSubmit(navController: NavController){
     }
 }
 
-@Preview
+//@Preview(showBackground = true, backgroundColor = 0xFFFEFBEF)
 @Composable
 private fun Subtasks(names: List<String> = List(3) { "$it" }) {
-    LazyColumn(modifier = Modifier.padding(vertical = 2.dp)) {
+    LazyColumn {
         items(items = names) {name ->
             Subtask(name = name)
         }
@@ -82,10 +86,11 @@ private fun Subtasks(names: List<String> = List(3) { "$it" }) {
 
 @Composable
 private fun Subtask(name: String) {
-    // TODO: implement Card
     Card(
-        backgroundColor = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+        backgroundColor = Yellow100,
+        modifier = Modifier
+            .padding(vertical = 1.dp, horizontal = 1.dp)
+            .size(width = 200.dp, height = 25.dp)
     ) {
         CardContent(name)
     }
@@ -93,38 +98,25 @@ private fun Subtask(name: String) {
 
 @Composable
 private fun CardContent(name: String) {
+    Column(
+        //modifier = Modifier.padding(6.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
 
-    Row(
-        modifier = Modifier
-            .padding(12.dp)
-            // TODO: colour?
     ) {
-        Text(text = "Subtask ")
         Text(
-            text = name
+            text = "Subtask ",
+            color = Blue900
         )
+        /*Text(text = name,
+             color = Blue900)*/
     }
 }
 
-/*
-@Preview
-@Composable
-fun TopAppBar(
-    modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colors.primarySurface,
-    contentColor: Color = contentColorFor(backgroundColor),
-    elevation: Dp = AppBarDefaults.TopAppBarElevation,
-    contentPadding: PaddingValues = AppBarDefaults.ContentPadding,
-    content: (@Composable @ExtensionFunctionType RowScope.() -> Unit)?
-) {
-}
-*/
-
-/*
 @Preview(showBackground = true)
 @Composable
 fun FinishSubmitPreview() {
     WorkOrDieTheme {
-        FinishSubmit()
+        FinishSubmit(rememberNavController())
     }
-}*/
+}
