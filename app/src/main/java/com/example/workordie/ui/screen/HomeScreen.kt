@@ -1,6 +1,7 @@
 package com.example.workordie.ui.screen
 
 
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -8,9 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -21,10 +28,9 @@ https://www.jetpackcompose.net/scaffold
 https://www.youtube.com/watch?v=UDW4v88V41M
 * */
 
-/* TODOs
+/* TODO
 cant find suitable icon for All Tasks
 the onclick of bottom bar item should be navigation in the future
-havent place the profile icon
 body content
 * */
 
@@ -35,7 +41,7 @@ fun Home(navController : NavController){
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            MyTopBar(scaffoldState = scaffoldState, scope = scope)
+            HomeTopBar(scaffoldState = scaffoldState, scope = scope)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -51,50 +57,138 @@ fun Home(navController : NavController){
             DrawerContent()
         },
         content = {
-            BodyContent()
+            BodyContent(navController)
         },
         bottomBar = {
-            MyBottomBar()
+            HomeBottomBar()
         }
     )
 }
 
 @Composable
-fun MyTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
+fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
     val drawerState = scaffoldState.drawerState
 
     TopAppBar(
         title = { },
+        modifier = Modifier.fillMaxWidth(),
         navigationIcon = {
-            IconButton(
-                onClick = {
-                    scope.launch {
-                        if(drawerState.isClosed){
-                            drawerState.open()
-                        }else{
-                            drawerState.close()
+            Row(
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.End
+            ){
+                //menu
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            if(drawerState.isClosed){
+                                drawerState.open()
+                            }else{
+                                drawerState.close()
+                            }
                         }
                     }
+                ) {
+                    Icon(
+                        Icons.Default.Settings,
+                        contentDescription = "Settings"
+                    )
                 }
-            ) {
-                Icon(
-                    Icons.Default.Menu,
-                    contentDescription = "Menu"
-                )
+
+                //profile
+                IconButton(
+                    onClick = { }
+                ) {
+                    Icon(
+                        Icons.Default.Person,
+                        contentDescription = "Profile"
+                    )
+                }
             }
+
         }
     )
 }
 
 @Composable
-fun BodyContent(){
+fun BodyContent(navController : NavController){
     val date = Date()
     val formatter = SimpleDateFormat("MMM dd")
     val dateString: String = formatter.format(date)
-    Text(
-        text = dateString,
-        fontSize = 36.sp
-    )
+
+    
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = dateString,
+            modifier = Modifier,
+            fontSize = 36.sp,
+            textAlign = TextAlign.Center
+        )
+
+
+        Text(
+            text = "Today's Task:",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Right
+        )
+        for(i in 1..3){
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(text = "Task $i")
+                Text(text = "$i h")
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Default.Menu,
+                        contentDescription = "Menu"
+                    )
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        Icons.Default.PlayArrow,
+                        contentDescription = "PlayButton"
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        Column() {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(40.dp)
+            ) {
+                Text(text = "Finished Tasks")
+                Text(text = "Time spent")
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(140.dp)
+            ) {
+                Text(
+                    text = "Task 0",
+                    textAlign = TextAlign.Left
+                )
+
+                Text(
+                    text = "3h",
+                    textAlign = TextAlign.Right
+                )
+            }
+        }
+
+        //testing only
+        Button(
+            onClick = {
+                navController.navigate(NavScreen.CountingTime.route)
+            }
+        ) {
+            Text(text = "test for Counting")
+        }
+    }
 }
 
 @Composable
@@ -104,7 +198,7 @@ fun DrawerContent(){
 
 //pass navcontroller here after creating the following 3 pages
 @Composable
-fun MyBottomBar(){
+fun HomeBottomBar(){
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 10.dp
@@ -159,11 +253,11 @@ fun MyBottomBar(){
 }
 
 
-//Don't uncomment here, since Home() needs a parameter
-/*@Preview(showBackground = true)
+
+@Preview(showBackground = true)
 @Composable
 fun HomePreview() {
     WorkOrDieTheme {
-        Home()
+        Home(rememberNavController())
     }
-}*/
+}

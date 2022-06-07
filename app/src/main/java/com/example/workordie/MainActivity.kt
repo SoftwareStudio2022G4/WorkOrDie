@@ -18,13 +18,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             WorkOrDieTheme {
                 WorkorDieApp()
-                // A surface container using the 'background' color from the theme
-                /*Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }*/
             }
         }
     }
@@ -35,6 +28,8 @@ fun WorkorDieApp(){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
+
+
 
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
@@ -67,19 +62,12 @@ fun WorkorDieApp(){
             dailyTask()
         }
     }
-
 }
-
-/*@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}*/
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     WorkOrDieTheme {
-        //Greeting("Android")
         WorkorDieApp()
     }
 }
