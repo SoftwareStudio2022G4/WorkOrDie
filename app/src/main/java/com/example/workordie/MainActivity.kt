@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -17,13 +18,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             WorkOrDieTheme {
                 WorkorDieApp()
-                // A surface container using the 'background' color from the theme
-                /*Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }*/
             }
         }
     }
@@ -56,20 +50,22 @@ fun WorkorDieApp(){
         composable(route = NavScreen.FinishPopup.route){
             FinishPopup()
         }
+        composable(route = NavScreen.CountingTime.route){
+            CountingTime()
+        }
+        composable(route = NavScreen.calendar.route){
+            Calendar(navController = navController)
+        }
+        composable(route = NavScreen.dailyTask.route){
+            DailyTask()
+        }
     }
-
 }
-
-/*@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}*/
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     WorkOrDieTheme {
-        //Greeting("Android")
         WorkorDieApp()
     }
 }
