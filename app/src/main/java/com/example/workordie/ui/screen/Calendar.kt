@@ -31,7 +31,7 @@ import java.util.*
 // Creating a composable
 // function to display Top Bar
 @Composable
-fun MainContent(navController : NavController) {
+fun Calendar(navController : NavController) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -44,7 +44,7 @@ fun MainContent(navController : NavController) {
                         },
                 backgroundColor = Color(0xFFFBE8A6))
                  },
-        content = { MyContent(navController = navController) }
+        content = { CalendarContent(navController = navController) }
     )
 }
 
@@ -53,7 +53,7 @@ fun MainContent(navController : NavController) {
 // Calling this function as content
 // in the above function
 @Composable
-fun MyContent(navController : NavController){
+fun CalendarContent(navController : NavController){
 
     // Fetching the Local Context
     val mContext = LocalContext.current
