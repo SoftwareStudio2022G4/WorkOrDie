@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -53,6 +54,12 @@ fun WorkorDieApp(){
         }
         composable(route = NavScreen.CountingTime.route){
             CountingTime()
+        }
+        composable(route = NavScreen.calendar.route){
+            MainContent(navController = navController)
+        }
+        composable(route = NavScreen.dailyTask.route){
+            dailyTask()
         }
     }
 }
