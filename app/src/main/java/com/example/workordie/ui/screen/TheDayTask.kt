@@ -18,7 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.theme.WorkOrDieTheme
 
 @Composable
-fun dailyTask(){
+fun DailyTask(){
     Scaffold(
         topBar = {
             TopAppBar(
@@ -32,13 +32,13 @@ fun dailyTask(){
                 backgroundColor = Color(0xFFFBE8A6)
             )
         },
-        content = { MyContentDaily() }
+        content = { DailyTaskContent() }
     )
 
 
 }
 @Composable
-fun MyContentDaily(){
+fun DailyTaskContent(){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -80,6 +80,6 @@ fun MyContentDaily(){
 @Composable
 fun DailyTaskPreview() {
     WorkOrDieTheme {
-        dailyTask()
+//        dailyTask()
     }
 }

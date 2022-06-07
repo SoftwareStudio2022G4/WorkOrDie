@@ -29,8 +29,6 @@ fun WorkorDieApp(){
     //use navController to navigate between screens
     val navController = rememberNavController()
 
-
-
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
     NavHost(
@@ -56,10 +54,10 @@ fun WorkorDieApp(){
             CountingTime()
         }
         composable(route = NavScreen.calendar.route){
-            MainContent(navController = navController)
+            Calendar(navController = navController)
         }
         composable(route = NavScreen.dailyTask.route){
-            dailyTask()
+            DailyTask()
         }
     }
 }
