@@ -11,4 +11,5 @@ sealed class NavScreen(val route : String) {
     object AllTasks : NavScreen("all_tasks")
     object calendar : NavScreen("calendar")
     object dailyTask : NavScreen("dailyTask")
+    object Settings : NavScreen("settings")
 }

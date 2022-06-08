@@ -59,6 +59,9 @@ fun WorkorDieApp(){
         composable(route = NavScreen.dailyTask.route){
             DailyTask()
         }
+        composable(route = NavScreen.Settings.route){
+            Setting(navController = navController)
+        }
     }
 }
 
