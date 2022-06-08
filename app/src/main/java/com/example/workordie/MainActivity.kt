@@ -11,6 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.screen.*
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import android.app.Application
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +34,20 @@ fun WorkorDieApp(){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
+
+    //viewModel owner
+    val owner = LocalViewModelStoreOwner.current
+    owner?.let {
+        val viewModel: TaskViewModel = viewModel(
+            it,
+            "TaskViewModel",
+            TaskViewModelFactory(
+                LocalContext.current.applicationContext
+                        as Application)
+        )
+
+        //ScreenSetup(viewModel)
+    }
 
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
@@ -59,6 +79,14 @@ fun WorkorDieApp(){
         composable(route = NavScreen.dailyTask.route){
             DailyTask()
         }
+    }
+}
+
+//viewModel Factory
+class TaskViewModelFactory(val application: Application) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return TaskViewModel(application) as T
     }
 }
 
