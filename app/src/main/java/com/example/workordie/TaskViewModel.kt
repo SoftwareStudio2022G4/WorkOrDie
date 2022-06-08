@@ -23,11 +23,21 @@ class TaskViewModel(application: Application) : ViewModel() {
         searchResults = repository.searchResults
     }
 
-    fun insertTask(task: Task) {
-        repository.insertTask(task)
+    fun insertTask(
+        taskType: String,
+        taskName: String,
+        startDate: String,
+        endDate: String
+    ) {
+        repository.insertTask(
+            taskType,
+            taskName,
+            startDate,
+            endDate
+        )
     }
 
-    fun findTask(date: Date) {
+    fun findTask(date: String) {
         repository.findSingleDayTasks(date)
     }
 
