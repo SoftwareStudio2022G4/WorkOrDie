@@ -1,4 +1,4 @@
-package com.example.workordie
+package com.example.workordie.data
 
 import android.app.Application
 import com.example.workordie.data.TaskRoomDatabase

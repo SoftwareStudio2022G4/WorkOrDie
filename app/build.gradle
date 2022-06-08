@@ -70,4 +70,10 @@ dependencies {
 
     def nav_version = "2.4.2"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+
+    //viewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
 }
