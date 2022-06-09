@@ -48,8 +48,8 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun MainApp(viewModel: MainViewModel, navController: NavController) {
-    MainApp(
+fun AccumulateTimer(viewModel: MainViewModel, navController: NavController) {
+    AccumulateTimerContent(
         navController,
         isPlaying = viewModel.isPlaying,
         seconds = viewModel.seconds,
@@ -63,7 +63,7 @@ fun MainApp(viewModel: MainViewModel, navController: NavController) {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-private fun MainApp(
+private fun AccumulateTimerContent(
     navController : NavController,
     isPlaying: Boolean,
     seconds: String,
@@ -186,7 +186,7 @@ private fun MainApp(
 @Composable
 fun DefaultPreview() {
 
-        MainApp(
+        AccumulateTimerContent(
             navController = rememberNavController(),
             false,
             "00",
