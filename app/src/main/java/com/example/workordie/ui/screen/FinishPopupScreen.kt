@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.theme.WorkOrDieTheme
 
 /* TODO
@@ -20,7 +22,7 @@ the info box between subtasks and done button
 * */
 
 @Composable
-fun FinishPopup(){
+fun FinishPopup(navController : NavController){
     Column(
         modifier = Modifier.padding(30.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -60,7 +62,7 @@ fun FinishPopup(){
 
         //will handle onclick event after finish designing the counting time screen
         Button(
-            onClick = { /*TODO*/ }
+            onClick = { navController.navigate(NavScreen.Home.route) }
         ) {
             Text(text = "Done")
             Icon(
@@ -75,6 +77,6 @@ fun FinishPopup(){
 @Composable
 fun FinishPopupPreview() {
     WorkOrDieTheme {
-        FinishPopup()
+        FinishPopup(navController = rememberNavController())
     }
 }
