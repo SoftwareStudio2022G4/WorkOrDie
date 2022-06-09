@@ -88,7 +88,7 @@ fun Setting(modifier : Modifier = Modifier,navController : NavController){
                         Text(text = "Selected Time:")
                         Text(text = " ${mTime.value}")
                         Button(onClick = { mTimePickerDialog.show()}) {
-                            Text(text = "Time Picker", color = Color.White)
+                            Text(text = "Time Picker", color = Color.Black)
                         }
 
                         // Add a spacer of 100dp
@@ -100,7 +100,7 @@ fun Setting(modifier : Modifier = Modifier,navController : NavController){
                     }
                 }
                 //divider can change color directly
-                Divider(thickness = 10.dp)
+                Divider(thickness = 5.dp)
                 Card(modifier = Modifier.fillMaxWidth()){
                     Row() {
                         Column() {
@@ -126,7 +126,7 @@ fun Setting(modifier : Modifier = Modifier,navController : NavController){
                                 val checkedState = remember { mutableStateOf(false) }
                                 Row() {
                                     Text(text = "Notification")
-                                    //Spacer(modifier = Modifier.width(250.dp))
+                                    Spacer(modifier = Modifier.width(250.dp))
 
                                     Switch(
                                         checked = checkedState.value,
@@ -335,5 +335,7 @@ fun Setting(modifier : Modifier = Modifier,navController : NavController){
 fun SettingPreview() {
     WorkOrDieTheme {
         //Setting(rememberNavController(navigators = ))
+        Setting(modifier = Modifier, rememberNavController())
+
     }
 }
