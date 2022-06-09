@@ -45,6 +45,9 @@ android {
     }
 }
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -60,6 +63,20 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    // Room
+    apply plugin: 'kotlin-kapt'
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation "androidx.room:room-paging:$room_version"
+
+
     def nav_version = "2.4.2"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
+
+    //viewModel
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
 }

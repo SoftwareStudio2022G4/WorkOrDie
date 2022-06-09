@@ -17,13 +17,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.ui.text.input.KeyboardType
+import com.example.workordie.TaskViewModel
+import com.example.workordie.model.Task
 
 
 /* TODO
 *  add subtask textfield
 * */
 @Composable
-fun AddTask(navController: NavController){
+fun AddTask(
+    navController: NavController,
+    viewModel: TaskViewModel
+){
     var taskNameState by rememberSaveable { mutableStateOf("") }
     var taskTypeState by rememberSaveable { mutableStateOf("") }
     var taskDeadlineState by rememberSaveable { mutableStateOf("") }
@@ -60,13 +65,13 @@ fun AddTask(navController: NavController){
             value = taskNameState,
             onValueChange = { taskNameState = it },
             label = { Text(text = "Name") },
-            placeholder = { Text(text = "機率") }
+            placeholder = { Text(text = "Probability") }
         )
         OutlinedTextField(
             value = taskTypeState,
             onValueChange = { taskTypeState = it },
             label = { Text(text = "Type") },
-            placeholder = { Text(text = "作業") }
+            placeholder = { Text(text = "HW") }
         )
         OutlinedTextField(
             value = taskDeadlineState,
@@ -93,7 +98,17 @@ fun AddTask(navController: NavController){
             label = { Text(text = "Add subtasks") }
         )
         Button(
-            onClick = { navController.navigate(NavScreen.FinishSubmit.route) },
+            onClick = {
+                val task = Task(
+                    taskType = taskTypeState,
+                    taskName = taskNameState,
+                    startDate = taskStartDateState,
+                    endDate = taskDeadlineState,
+                    totalTimeSpent = 0.0
+                )
+                viewModel.insert(task)
+                navController.navigate(NavScreen.FinishSubmit.route)
+            },
             modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
         ) {
             Text(text = "submit")

@@ -15,6 +15,12 @@ import com.example.workordie.ui.accumulateTime.MainApp
 import com.example.workordie.ui.accumulateTime.MainViewModel*/
 import com.example.workordie.ui.screen.*
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import android.app.Application
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 //import kotlin.time.ExperimentalTime
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +28,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WorkOrDieTheme {
-                WorkorDieApp()
+                val viewModelowner = LocalViewModelStoreOwner.current
+
+                viewModelowner?.let {
+                    val viewModel: TaskViewModel = viewModel(
+                        it,
+                        "TaskViewModel",
+                        TaskViewModelFactory(
+                            LocalContext.current.applicationContext
+                                    as Application)
+                    )
+
+                    WorkorDieApp(viewModel)
+                }
+                //WorkorDieApp()
             }
         }
     }
@@ -30,10 +49,11 @@ class MainActivity : ComponentActivity() {
 
 //@OptIn(ExperimentalTime::class)
 @Composable
-fun WorkorDieApp(){
+fun WorkorDieApp(viewModel: TaskViewModel){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
+
     //val viewModel: MainViewModel = viewModel()
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
@@ -48,7 +68,7 @@ fun WorkorDieApp(){
             AllTasks(navController = navController)
         }
         composable(route = NavScreen.AddTask.route){
-            AddTask(navController = navController)
+            AddTask(navController = navController, viewModel = viewModel)
         }
         composable(route = NavScreen.FinishSubmit.route){
             FinishSubmit(navController = navController)
@@ -84,10 +104,19 @@ fun WorkorDieApp(){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WorkOrDieTheme {
-        WorkorDieApp()
+//viewModel Factory
+class TaskViewModelFactory(val application: Application) :
+    ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return TaskViewModel(application) as T
     }
 }
+
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    WorkOrDieTheme {
+//        WorkorDieApp()
+//    }
+//}
+
