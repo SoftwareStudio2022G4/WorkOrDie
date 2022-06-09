@@ -20,7 +20,8 @@ import androidx.compose.ui.text.input.KeyboardType
 
 
 /* TODO
-*  add subtask textfield
+* add subtask text field
+* button
 * */
 @Composable
 fun AddTask(navController: NavController){

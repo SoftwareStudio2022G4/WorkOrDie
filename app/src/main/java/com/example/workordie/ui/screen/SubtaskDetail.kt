@@ -3,6 +3,7 @@ package com.example.workordie.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,27 +22,32 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.theme.WorkOrDieTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+
+/*TODO (1) Add horizontal line below Add subtask button
+       (2) Alight the 3 icons below
+       (3) Fix checkboxes so it won't move according to the length of Subtask name
+       (4) Navigation of 3 button and Go back button
+       (5) Connect and update data according to DB
+       (6) Add description of Completion*/
 
 @Composable
 fun SubtaskDetail(navController : NavController){
     val scaffoldState : ScaffoldState = rememberScaffoldState()
-    val scope : CoroutineScope = rememberCoroutineScope()
+    rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            SubtaskTopBar(scaffoldState = scaffoldState, scope = scope)
+            SubtaskTopBar(scaffoldState = scaffoldState)
         },
         content = {
             SubtaskContent(navController)
         }
     )
 }
-/*https://developer.android.com/jetpack/compose/layouts/alignment-lines?hl=zh-tw*/
+
 @Composable
-fun SubtaskTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
-    val drawerState = scaffoldState.drawerState
+fun SubtaskTopBar(scaffoldState: ScaffoldState){
+    scaffoldState.drawerState
 
     TopAppBar(
         title = { },
@@ -50,21 +57,12 @@ fun SubtaskTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
                 modifier = Modifier,
                 horizontalArrangement = Arrangement.End
             ){
-                //TODO: change to BACK button
                 IconButton(
-                    onClick = {
-                        scope.launch {
-                            if(drawerState.isClosed){
-                                drawerState.open()
-                            }else{
-                                drawerState.close()
-                            }
-                        }
-                    }
+                    onClick = {/*navController.navigate(NavScreen.CountingTime.route)*/ }
                 ) {
                     Icon(
-                        Icons.Default.Settings,
-                        contentDescription = "Settings"
+                        Icons.Filled.ArrowBackIos,
+                        contentDescription = "back"
                     )
                 }
             }
@@ -89,11 +87,27 @@ fun SubtaskContent(navController : NavController){
         Spacer(modifier = Modifier.height(12.dp))
         CheckSubtasks()
         Spacer(modifier = Modifier.height(48.dp))
-        // TODO: + Add subtask button
+        val backgroundShape = RoundedCornerShape(6.dp)
         Button(
-            onClick = {/*TODO*/}
+            onClick = {/*TODO*/},
+            /*modifier = Modifier.width(220.dp).height(60.dp)*/
+            contentPadding = PaddingValues(
+                start = 30.dp,
+                top = 16.dp,
+                end = 30.dp,
+                bottom = 16.dp
+            ),
+            modifier = Modifier.shadow(8.dp, backgroundShape),
+            shape = RoundedCornerShape(6.dp)
         ) {
-            Text(text = "+ Add subtask")
+            Icon(
+                Icons.Filled.Add,
+                contentDescription = "Add",
+                modifier = Modifier.size(ButtonDefaults.IconSize)
+            )
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(text = "Add subtask",
+            fontSize = 20.sp)
         }
         Spacer(modifier = Modifier.height(48.dp))
         Row(
@@ -101,14 +115,14 @@ fun SubtaskContent(navController : NavController){
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Icon(
-                Icons.Filled.Star,
+                Icons.Filled.StarBorder,
                 contentDescription = "completion icon"
             )
-            Text(text = "Completion:",
+            Text(text = "Completion: ",
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
-            /*TODO: update completion from DB*/
+            /*TODO (5): update completion from DB*/
             Text(text = "40",
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
@@ -118,6 +132,7 @@ fun SubtaskContent(navController : NavController){
                 fontSize = 24.sp
             )
         }
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -127,17 +142,18 @@ fun SubtaskContent(navController : NavController){
                 contentDescription = "Due date"
             )
             Spacer(Modifier.width(10.0.dp))
-            Text(text = "Deadline:",
+            Text(text = "Deadline: ",
                 textAlign = TextAlign.Start,
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
-            /*TODO: update completion from DB*/
+            /*TODO (5): update completion from DB*/
             Text(text = "<date>",
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
+        Spacer(modifier = Modifier.height(8.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
@@ -147,7 +163,7 @@ fun SubtaskContent(navController : NavController){
                 contentDescription = "hrs per day"
             )
             Spacer(Modifier.width(10.0.dp))
-            Text(text = "Hours/day:",
+            Text(text = "Hours/day: ",
                 color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
@@ -157,8 +173,48 @@ fun SubtaskContent(navController : NavController){
                 fontSize = 24.sp
             )
         }
+        Spacer(modifier = Modifier.height(180.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(48.dp)
+                    .shadow(8.dp, backgroundShape),
+                shape = RoundedCornerShape(6.dp)
+            ) {
+                Text(text = "Save",
+                    fontSize = 20.sp)
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Icon(
+                    Icons.Filled.Save,
+                    contentDescription = "save",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+            Button(onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(48.dp)
+                    .shadow(8.dp, backgroundShape),
+                shape = RoundedCornerShape(6.dp)
+            ) {
+                Text(text = "Start now",
+                    fontSize = 20.sp)
+                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                Icon(
+                    Icons.Filled.PlayArrow,
+                    contentDescription = "start",
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                )
+            }
+        }
     }
 }
+
 @Composable
 private fun CheckSubtasks(names: List<String> = List(2) { "$it" }) {
     LazyColumn{
@@ -171,7 +227,6 @@ private fun CheckSubtasks(names: List<String> = List(2) { "$it" }) {
 @Composable
 private fun CheckSubtask(name: String) {
     Column(
-        //modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -196,6 +251,7 @@ private fun CheckSubtask(name: String) {
         }
     }
 }
+
 
 @Composable
 fun SubtaskCheckbox() {
