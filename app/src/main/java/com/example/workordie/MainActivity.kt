@@ -23,31 +23,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             WorkOrDieTheme {
-                WorkorDieApp()
+                val viewModelowner = LocalViewModelStoreOwner.current
+
+                viewModelowner?.let {
+                    val viewModel: TaskViewModel = viewModel(
+                        it,
+                        "TaskViewModel",
+                        TaskViewModelFactory(
+                            LocalContext.current.applicationContext
+                                    as Application)
+                    )
+
+                    WorkorDieApp(viewModel)
+                }
+                //WorkorDieApp()
             }
         }
     }
 }
 
 @Composable
-fun WorkorDieApp(){
+fun WorkorDieApp(viewModel: TaskViewModel){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
 
-    //viewModel owner
-    val owner = LocalViewModelStoreOwner.current
-    owner?.let {
-        val viewModel: TaskViewModel = viewModel(
-            it,
-            "TaskViewModel",
-            TaskViewModelFactory(
-                LocalContext.current.applicationContext
-                        as Application)
-        )
-
-        //ScreenSetup(viewModel)
-    }
 
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
@@ -62,7 +62,7 @@ fun WorkorDieApp(){
             AllTasks(navController = navController)
         }
         composable(route = NavScreen.AddTask.route){
-            AddTask(navController = navController)
+            AddTask(navController = navController, viewModel = viewModel)
         }
         composable(route = NavScreen.FinishSubmit.route){
             FinishSubmit(navController = navController)
@@ -90,10 +90,10 @@ class TaskViewModelFactory(val application: Application) :
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    WorkOrDieTheme {
-        WorkorDieApp()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//    WorkOrDieTheme {
+//        WorkorDieApp()
+//    }
+//}
