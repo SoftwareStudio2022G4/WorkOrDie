@@ -45,6 +45,9 @@ android {
     }
 }
 
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -61,13 +64,12 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
     // Room
-    implementation "androidx.room:room-runtime:$room_version"
     apply plugin: 'kotlin-kapt'
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-
+    implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-    // To use Kotlin annotation processing tool (kapt)
-//    kapt("androidx.room:room-compiler:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation "androidx.room:room-paging:$room_version"
+
 
     def nav_version = "2.4.2"
     implementation("androidx.navigation:navigation-compose:$nav_version")
