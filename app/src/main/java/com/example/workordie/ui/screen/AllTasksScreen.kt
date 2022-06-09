@@ -1,7 +1,9 @@
 package com.example.workordie.ui.screen
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
@@ -10,14 +12,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.workordie.TaskViewModel
 
 @Composable
-fun AllTasks(navController: NavController){
+fun AllTasks(
+    navController: NavController,
+    viewModel: TaskViewModel
+){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold (
         scaffoldState = scaffoldState,
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navController.navigate(NavScreen.AddTask.route) }
+            ){
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "fab icon"
+                )
+            }
+        },
         content = {
-            AlltasksBodyContent()
+            AlltasksBodyContent(viewModel)
         },
         bottomBar = {
             AllTasksBottomBar(navController)
@@ -26,8 +42,19 @@ fun AllTasks(navController: NavController){
 }
 
 @Composable
-fun AlltasksBodyContent(){
-
+fun AlltasksBodyContent(viewModel: TaskViewModel){
+    //no error & logic is correct but shows nothing
+    val tasksList = viewModel.allProducts.value
+    Column {
+        tasksList?.forEach { item ->
+            Text(text = "${item.id}")
+            Text(text = item.taskType.toString())
+            Text(text = item.taskName)
+            Text(text = item.startDate)
+            Text(text = item.endDate)
+            Text(text = "${item.totalTimeSpent}")
+        }
+    }
 }
 
 @Composable
