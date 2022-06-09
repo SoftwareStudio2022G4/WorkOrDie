@@ -41,7 +41,7 @@ fun Home(navController : NavController){
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            HomeTopBar(scaffoldState = scaffoldState, scope = scope)
+            HomeTopBar(scaffoldState = scaffoldState, scope = scope, navController)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -60,13 +60,13 @@ fun Home(navController : NavController){
             BodyContent(navController)
         },
         bottomBar = {
-            HomeBottomBar()
+            HomeBottomBar(navController)
         }
     )
 }
 
 @Composable
-fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
+fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope, navController : NavController){
     val drawerState = scaffoldState.drawerState
 
     TopAppBar(
@@ -80,13 +80,14 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
                 //menu
                 IconButton(
                     onClick = {
-                        scope.launch {
+                        /*scope.launch {
                             if(drawerState.isClosed){
                                 drawerState.open()
                             }else{
                                 drawerState.close()
                             }
-                        }
+                        }*/
+                        navController.navigate(NavScreen.Settings.route)
                     }
                 ) {
                     Icon(
@@ -97,7 +98,7 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
 
                 //profile
                 IconButton(
-                    onClick = { }
+                    onClick = {navController.navigate(NavScreen.Profile.route) }
                 ) {
                     Icon(
                         Icons.Default.Person,
@@ -147,7 +148,7 @@ fun BodyContent(navController : NavController){
                         contentDescription = "Menu"
                     )
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
                     Icon(
                         Icons.Default.PlayArrow,
                         contentDescription = "PlayButton"
@@ -183,7 +184,7 @@ fun BodyContent(navController : NavController){
         //testing only
         Button(
             onClick = {
-                navController.navigate(NavScreen.CountingTime.route)
+                navController.navigate(NavScreen.Settings.route)
             }
         ) {
             Text(text = "test for Counting")
@@ -198,8 +199,8 @@ fun DrawerContent(){
 
 //pass navcontroller here after creating the following 3 pages
 @Composable
-fun HomeBottomBar(){
-    val selectedIndex = remember { mutableStateOf(0) }
+fun HomeBottomBar(navController : NavController){
+    val selectedIndex = remember { mutableStateOf(1) }
     BottomNavigation(
         elevation = 10.dp
     ) {
@@ -216,6 +217,7 @@ fun HomeBottomBar(){
             selected = (selectedIndex.value == 0),
             onClick = {
                 selectedIndex.value = 0
+                navController.navigate(NavScreen.AllTasks.route)
             }
         )
 
@@ -231,6 +233,7 @@ fun HomeBottomBar(){
             selected = (selectedIndex.value == 1),
             onClick = {
                 selectedIndex.value = 1
+                navController.navigate(NavScreen.Home.route)
             }
         )
 
@@ -247,6 +250,7 @@ fun HomeBottomBar(){
             selected = (selectedIndex.value == 2),
             onClick = {
                 selectedIndex.value = 2
+                navController.navigate(NavScreen.Calendar.route)
             }
         )
     }

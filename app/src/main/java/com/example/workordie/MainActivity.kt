@@ -53,14 +53,17 @@ fun WorkorDieApp(){
         composable(route = NavScreen.CountingTime.route){
             CountingTime()
         }
-        composable(route = NavScreen.calendar.route){
+        composable(route = NavScreen.Calendar.route){
             Calendar(navController = navController)
         }
-        composable(route = NavScreen.dailyTask.route){
+        composable(route = NavScreen.DailyTask.route){
             DailyTask()
         }
         composable(route = NavScreen.Settings.route){
             Setting(navController = navController)
+        }
+        composable(route = NavScreen.Profile.route){
+            Profile(navController = navController)
         }
     }
 }
