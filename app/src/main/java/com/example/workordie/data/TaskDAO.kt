@@ -2,22 +2,19 @@ package com.example.workordie.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.workordie.model.SubTask
 import com.example.workordie.model.Task
 import com.example.workordie.model.TaskWithSubTasks
 import java.util.*
 
 @Dao
 interface TaskDAO {
-    @Insert
-    suspend fun insert(
-        taskType: String,
-        taskName: String,
-        startDate: String,
-        endDate: String
-    )
 
     @Insert
     suspend fun insert(task: Task)
+
+    @Insert
+    suspend fun insertSubTask(subTask: SubTask)
 
     // used to update subtask
     @Update
@@ -25,9 +22,6 @@ interface TaskDAO {
 
     @Delete
     suspend fun delete(task: Task)
-
-    @Delete
-    suspend fun delete(name: String)
 
     // return value use flow?
     @Query("select * from task_list")

@@ -14,25 +14,15 @@ class TaskRepository(private val taskDao: TaskDAO) {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    fun insertTask(
-        taskType: String,
-        taskName: String,
-        startDate: String,
-        endDate: String
-    ) {
+    fun insertTask(task: Task){
         coroutineScope.launch(Dispatchers.IO) {
-            taskDao.insert(
-                taskType,
-                taskName,
-                startDate,
-                endDate
-            )
+            taskDao.insert(task)
         }
     }
 
-    fun deleteTask(name: String) {
+    fun deleteTask(task: Task) {
         coroutineScope.launch(Dispatchers.IO) {
-            taskDao.delete(name)
+            taskDao.delete(task)
         }
     }
 

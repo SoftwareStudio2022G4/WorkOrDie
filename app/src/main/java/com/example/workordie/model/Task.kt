@@ -29,9 +29,6 @@ data class Task(
     @ColumnInfo(name = "end_date")
     var endDate: String,
 
-//    @ColumnInfo(name = "subtask_list")
-//    var subtaskList: List<SubTask>,
-
     @ColumnInfo(name = "total_time_spent")
     var totalTimeSpent: Double
 
