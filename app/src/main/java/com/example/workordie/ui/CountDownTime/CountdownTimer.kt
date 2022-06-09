@@ -229,6 +229,6 @@ private fun CompletedText(viewModel:CountDownTimeViewModel) {
 @Composable
 fun CountdownTimePreview() {
     WorkOrDieTheme {
-        MyApp(rememberNavController())
+        CountdownTimer(rememberNavController())
     }
 }
