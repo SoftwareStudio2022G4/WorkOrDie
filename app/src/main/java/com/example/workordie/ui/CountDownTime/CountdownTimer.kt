@@ -8,6 +8,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,10 +23,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 import com.example.workordie.R
 import com.example.workordie.ui.CountDownTime.utils.TimeFormatUtils
+import com.example.workordie.ui.screen.NavScreen
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlin.math.cos
 import kotlin.math.sin
@@ -38,36 +45,32 @@ import kotlin.math.sin
 
 // Start building your app here!
 @Composable
-fun MyApp() {
+fun MyApp(navController : NavController) {
     val viewModel: CountDownTimeViewModel = viewModel()
     Scaffold(
         Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
+
                 title = {
                     Text(
                         text = stringResource(id = R.string.app_name)
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {navController.navigate(NavScreen.CountingTime.route)}) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+
+                    }
                 }
             )
         },
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(start = 30.dp, end = 40.dp, top = 10.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-            ) {
-                Text(
-                    text = "Countdown",
-                    modifier = Modifier
-                        .padding(start = 30.dp, end = 40.dp, top = 10.dp)
-                )
-            }
+            Text(text = "Countdown", fontSize = 30.sp)
             CompletedText(viewModel)
             TimeLeftText(viewModel)
             ProgressCircle(viewModel)
@@ -76,6 +79,19 @@ fun MyApp() {
                 StartButton(viewModel)
                 StopButton(viewModel)
             }
+
+            Button(
+                onClick = { navController.navigate(NavScreen.FinishPopup.route) },
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFFFBE8A6),
+                    contentColor = Color.Black)
+
+                ) {
+                    Text(text = "finish")
+                }
         }
     }
 }
@@ -116,7 +132,10 @@ private fun StartButton(viewModel: CountDownTimeViewModel) {
             .width(150.dp)
             .padding(16.dp),
         enabled = viewModel.totalTime > 0,
-        onClick = viewModel.status::clickStartButton
+        onClick = viewModel.status::clickStartButton,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFFFBE8A6),
+            contentColor = Color.Black)
     ) {
         Text(text = viewModel.status.startButtonDisplayString())
     }
@@ -129,7 +148,10 @@ private fun StopButton(viewModel: CountDownTimeViewModel) {
             .width(150.dp)
             .padding(16.dp),
         enabled = viewModel.status.stopButtonEnabled(),
-        onClick = viewModel.status::clickStopButton
+        onClick = viewModel.status::clickStopButton,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFFFBE8A6),
+            contentColor = Color.Black)
     ) {
         Text(text = "Stop")
     }
@@ -207,6 +229,6 @@ private fun CompletedText(viewModel:CountDownTimeViewModel) {
 @Composable
 fun CountdownTimePreview() {
     WorkOrDieTheme {
-        MyApp()
+        MyApp(rememberNavController())
     }
 }
