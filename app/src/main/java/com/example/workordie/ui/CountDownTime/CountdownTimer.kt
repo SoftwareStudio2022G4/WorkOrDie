@@ -45,7 +45,7 @@ import kotlin.math.sin
 
 // Start building your app here!
 @Composable
-fun MyApp(navController : NavController) {
+fun CountdownTimer(navController : NavController) {
     val viewModel: CountDownTimeViewModel = viewModel()
     Scaffold(
         Modifier.fillMaxSize(),
