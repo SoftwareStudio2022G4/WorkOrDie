@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -20,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.theme.Blue900
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import com.example.workordie.ui.theme.Yellow100
+import kotlinx.coroutines.CoroutineScope
 
 /*TODO:
 shadow of button
@@ -28,9 +30,32 @@ the font of button is different from the others
 
 @Composable
 fun FinishSubmit(navController: NavController){
+    val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
+    val scope : CoroutineScope = rememberCoroutineScope()
+    Scaffold(scaffoldState = scaffoldState,) {
+
+        Column() {
+            FinishSubmitBody(navController = navController)
+            Button(
+                onClick = { navController.navigate(NavScreen.Home.route) }
+            ) {
+                Text(text = "Done")
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = "Done"
+                )
+            }
+        }
+
+    }
+
+}
+@Composable
+fun FinishSubmitBody(navController: NavController){
     Column(
-        modifier = Modifier.fillMaxSize()
-                            .padding(top = 220.dp, bottom = 100.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 220.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -54,7 +79,7 @@ fun FinishSubmit(navController: NavController){
         )
 
         Spacer(modifier = Modifier.height(10.dp))
-            Subtasks()
+        Subtasks()
         //add some space between subtasks and button
         Spacer(modifier = Modifier.height(140.dp))
 

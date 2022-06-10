@@ -19,17 +19,21 @@ import com.example.workordie.ui.theme.WorkOrDieTheme
 
 @Composable
 fun DailyTask(){
+    val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
 
                 title = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
 
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
                     Spacer(modifier = Modifier.width(240.dp))
-                    Text("6/7's task", color = Color.Black)
+                    Text("6/7's task")
                 },
-                backgroundColor = Color(0xFFFBE8A6)
+
             )
         },
         content = { DailyTaskContent() }

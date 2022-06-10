@@ -20,8 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
-import com.example.workordie.ui.CountDownTime.MyApp
-import com.example.workordie.ui.accumulateTime.MainApp
+
 import com.example.workordie.ui.accumulateTime.MainViewModel
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
@@ -30,7 +29,6 @@ import kotlin.time.ExperimentalTime
 @Composable
 fun CountingTime(modifier: Modifier = Modifier, navController : NavController){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
-    val scope : CoroutineScope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
 

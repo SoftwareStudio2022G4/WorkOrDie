@@ -21,6 +21,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
+import com.example.workordie.ui.CountDownTime.CountdownTimer
+import com.example.workordie.ui.accumulateTime.AccumulateTimer
+import com.example.workordie.ui.accumulateTime.MainViewModel
+import kotlin.time.ExperimentalTime
+
 //import kotlin.time.ExperimentalTime
 
 class MainActivity : ComponentActivity() {
@@ -47,14 +53,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-//@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class)
 @Composable
 fun WorkorDieApp(viewModel: TaskViewModel){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
 
-    //val viewModel: MainViewModel = viewModel()
+    val CountTimeviewModel: MainViewModel = viewModel()
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
     NavHost(
@@ -91,16 +97,16 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.Profile.route){
             Profile(navController = navController)
         }
-        /*composable(route = NavScreen.CountdownTime.route){
-            MyApp(navController = navController)
+        composable(route = NavScreen.CountdownTime.route){
+            CountdownTimer(navController = navController)
         }
         composable(route = NavScreen.AccumulateTime.route){
 
-            com.example.workordie.ui.accumulateTime.MainApp(
-                viewModel = viewModel,
+            AccumulateTimer(
+                viewModel = CountTimeviewModel,
                 navController = navController
             )
-        }*/
+        }
     }
 }
 
