@@ -1,15 +1,16 @@
 package com.example.workordie.ui.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.workordie.TaskViewModel
@@ -43,16 +44,23 @@ fun AllTasks(
 
 @Composable
 fun AlltasksBodyContent(viewModel: TaskViewModel){
-    //no error & logic is correct but shows nothing
-    val tasksList = viewModel.allProducts.value
+    val tasksList by viewModel.allProducts.observeAsState()
+
     Column {
+        if(tasksList == null){
+            Text(text = "No task yet, go and add 1!")
+        }
         tasksList?.forEach { item ->
-            Text(text = "${item.id}")
-            Text(text = item.taskType.toString())
-            Text(text = item.taskName)
-            Text(text = item.startDate)
-            Text(text = item.endDate)
-            Text(text = "${item.totalTimeSpent}")
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                Text(text = "${item.id}")
+                Text(text = item.taskType.toString())
+                Text(text = item.taskName)
+                Text(text = item.startDate)
+                Text(text = item.endDate)
+                Text(text = "${item.totalTimeSpent}")
+            }
         }
     }
 }

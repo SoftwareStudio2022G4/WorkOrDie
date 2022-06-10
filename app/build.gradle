@@ -79,4 +79,7 @@ dependencies {
 
     //viewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+
+    //liveData -- observeAsState()
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 }
