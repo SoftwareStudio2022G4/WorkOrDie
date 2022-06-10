@@ -89,7 +89,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
             Calendar(navController = navController)
         }
         composable(route = NavScreen.DailyTask.route){
-            DailyTask()
+            DailyTask(navController = navController)
         }
         composable(route = NavScreen.Settings.route){
             Setting(navController = navController)
