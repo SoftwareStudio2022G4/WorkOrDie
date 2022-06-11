@@ -1,43 +1,38 @@
 package com.example.workordie
 
-//import androidx.lifecycle.viewmodel.compose.viewModel
-/*import com.example.workordie.ui.CountDownTime.MyApp
-import com.example.workordie.ui.accumulateTime.MainApp
-import com.example.workordie.ui.accumulateTime.MainViewModel*/
+
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavArgument
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.workordie.ui.CountDownTime.CountdownTimer
 import com.example.workordie.ui.GoogleSignIn.SignInViewModel
 import com.example.workordie.ui.accumulateTime.AccumulateTimer
 import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
 import com.example.workordie.ui.screen.*
 import com.example.workordie.ui.theme.WorkOrDieTheme
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 import kotlin.time.ExperimentalTime
 
 
-//import kotlin.time.ExperimentalTime
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -55,10 +50,8 @@ class MainActivity : ComponentActivity() {
 
                     WorkorDieApp(viewModel)
                 }
-                //WorkorDieApp()
-
-
             }
+
             val channelId = "notification"
 
             // 確認是否為Android 8.0以上版本
@@ -108,6 +101,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
     val navController = rememberNavController()
     val signInViewModel : SignInViewModel = viewModel()
     val CountTimeviewModel: AccumulateTimeViewModel = viewModel()
+
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
     NavHost(
@@ -117,8 +111,8 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.Home.route) {
             Home(navController = navController)
         }
-        composable(route = NavScreen.AllTasks.route) {
-            AllTasks(navController = navController)
+        composable(route = NavScreen.AllTasks.route){
+            AllTasks(navController = navController, viewModel = viewModel)
         }
         composable(route = NavScreen.AddTask.route) {
             AddTask(navController = navController, viewModel = viewModel)
@@ -126,8 +120,20 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.SubtaskDetail.route) {
             SubtaskDetail(navController = navController)
         }
-        composable(route = NavScreen.FinishSubmit.route) {
-            FinishSubmit(navController = navController)
+        composable(
+            route = NavScreen.FinishSubmit.route + "/{taskName}/{taskType}",
+            arguments = listOf(
+                navArgument(name = "taskName"){ NavType.StringType },
+                navArgument(name = "taskType"){ NavType.StringType }
+            )
+        ){ backStackEntry ->
+            val taskName = backStackEntry.arguments?.getString("taskName")
+            val taskType = backStackEntry.arguments?.getString("taskType")
+            FinishSubmit(
+                navController = navController,
+                taskName = taskName,
+                taskType = taskType
+            )
         }
         composable(route = NavScreen.FinishPopup.route) {
             FinishPopup(navController = navController)
@@ -150,8 +156,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.CountdownTime.route) {
             CountdownTimer(navController = navController)
         }
-        composable(route = NavScreen.AccumulateTime.route) {
-
+        composable(route = NavScreen.AccumulateTime.route){
             AccumulateTimer(
                 viewModel = CountTimeviewModel,
                 navController = navController
@@ -174,11 +179,10 @@ class TaskViewModelFactory(val application: Application) :
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    WorkOrDieTheme {
-//        WorkorDieApp()
-//    }
-//}
-
+/*@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    WorkOrDieTheme {
+        WorkorDieApp()
+    }
+}*/
