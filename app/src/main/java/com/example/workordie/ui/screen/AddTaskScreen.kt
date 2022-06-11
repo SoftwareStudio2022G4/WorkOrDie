@@ -22,7 +22,8 @@ import com.example.workordie.model.Task
 
 
 /* TODO
-*  add subtask textfield
+* add subtask text field
+* button
 * */
 @Composable
 fun AddTask(
