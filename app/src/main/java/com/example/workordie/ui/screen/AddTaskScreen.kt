@@ -100,33 +100,33 @@ fun AddTask(
                 value = taskNameState,
                 onValueChange = { taskNameState = it },
                 label = { Text(text = "Name") },
-                placeholder = { Text(text = "Probability") },
+                placeholder = { Text(text = "Click Choose Subject") },
                 readOnly = true
             )
             OutlinedTextField(
                 value = taskTypeState,
                 onValueChange = { taskTypeState = it },
                 label = { Text(text = "Type") },
-                placeholder = { Text(text = "HW") }
+                placeholder = { Text(text = "ex. HW") }
             )
             OutlinedTextField(
                 value = taskDeadlineState,
                 onValueChange = { taskDeadlineState = it },
                 label = { Text(text = "Deadline") },
-                placeholder = { Text(text = "5/30") }
+                placeholder = { Text(text = "ex. 5/30") }
             )
             OutlinedTextField(
                 value = taskTimeState,
                 onValueChange = { taskTimeState = it },
                 label = { Text(text = "Estimated Time to Finish(in hour)") },
-                placeholder = { Text(text = "5") },
+                placeholder = { Text(text = "ex. 5") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             OutlinedTextField(
                 value = taskStartDateState,
                 onValueChange = { taskStartDateState = it },
                 label = { Text(text = "Estimated Start Date") },
-                placeholder = { Text(text = "5/20") }
+                placeholder = { Text(text = "ex. 5/20") }
             )
             OutlinedTextField(
                 value = "+",
@@ -143,7 +143,7 @@ fun AddTask(
                         totalTimeSpent = 0.0
                     )
                     viewModel.insert(task)
-                    navController.navigate(NavScreen.FinishSubmit.route)
+                    navController.navigate(NavScreen.FinishSubmit.route + "/${taskNameState}/${taskTypeState}")
                 },
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
                 enabled = (
