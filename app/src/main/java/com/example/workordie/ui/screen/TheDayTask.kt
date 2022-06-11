@@ -14,31 +14,36 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.theme.WorkOrDieTheme
 
 @Composable
-fun DailyTask(){
+fun DailyTask(navController: NavController){
+    val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
 
                 title = {
+                    IconButton(onClick = { navController.navigate(NavScreen.Calendar.route) }) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
 
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
                     Spacer(modifier = Modifier.width(240.dp))
-                    Text("6/7's task", color = Color.Black)
+                    Text("6/7's task")
                 },
-                backgroundColor = Color(0xFFFBE8A6)
+
             )
         },
-        content = { DailyTaskContent() }
+        content = { DailyTaskContent(navController) }
     )
 
 
 }
 @Composable
-fun DailyTaskContent(){
+fun DailyTaskContent(navController: NavController){
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -58,13 +63,13 @@ fun DailyTaskContent(){
             ){
                 Text(text = "Task $i")
                 Text(text = "$i h")
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NavScreen.AllTasks.route) }) {
                     Icon(
                         Icons.Default.Menu,
                         contentDescription = "Menu"
                     )
                 }
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
                     Icon(
                         Icons.Default.PlayArrow,
                         contentDescription = "PlayButton"
@@ -80,6 +85,6 @@ fun DailyTaskContent(){
 @Composable
 fun DailyTaskPreview() {
     WorkOrDieTheme {
-//        dailyTask()
+        DailyTask(rememberNavController())
     }
 }

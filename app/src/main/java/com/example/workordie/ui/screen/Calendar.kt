@@ -36,17 +36,19 @@ import java.util.*
 // function to display Top Bar
 @Composable
 fun Calendar(navController : NavController) {
+    val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
 
                 title = {
 
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
+                    //Icon(Icons.Filled.ArrowBack, "backIcon")
                     Spacer(modifier = Modifier.width(240.dp))
-                    Text("Calendar", color = Color.Black)
+                    Text("Calendar", )
                         },
-                backgroundColor = Color(0xFFFBE8A6))
+            )
                  },
 
         content = { CalendarContent(navController = navController) },
@@ -101,7 +103,7 @@ fun CalendarContent(navController : NavController){
         // click displays/shows the DatePickerDialog
         Button(onClick = {
             mDatePickerDialog.show()
-        }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.LightGray) ) {
+        },  ) {
             Text(text = "Open Date Picker")
         }
 
@@ -125,13 +127,13 @@ fun CalendarContent(navController : NavController){
         //Text(text = "test: ${mDate.value}")
         if(mDate.value == ""){
             Button(onClick = {navController.navigate(NavScreen.DailyTask.route)},
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFEFBEF))) {
+                ) {
                 Text(text = "Go")
             }
         }
         else{
             Button(onClick = {navController.navigate(NavScreen.DailyTask.route)},
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFBE8A6))) {
+                ) {
                 Text(text = "Go")
             }
         }

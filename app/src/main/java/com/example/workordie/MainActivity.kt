@@ -1,35 +1,48 @@
 package com.example.workordie
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 //import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 /*import com.example.workordie.ui.CountDownTime.MyApp
 import com.example.workordie.ui.accumulateTime.MainApp
 import com.example.workordie.ui.accumulateTime.MainViewModel*/
-import com.example.workordie.ui.screen.*
-import com.example.workordie.ui.theme.WorkOrDieTheme
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import android.os.Bundle
+import android.widget.Button
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.workordie.ui.CountDownTime.CountdownTimer
+import com.example.workordie.ui.accumulateTime.AccumulateTimer
+import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
+import com.example.workordie.ui.screen.*
+import com.example.workordie.ui.theme.WorkOrDieTheme
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import kotlin.time.ExperimentalTime
+
+
 //import kotlin.time.ExperimentalTime
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             WorkOrDieTheme {
                 val viewModelowner = LocalViewModelStoreOwner.current
-
+                
                 viewModelowner?.let {
                     val viewModel: TaskViewModel = viewModel(
                         it,
@@ -42,19 +55,58 @@ class MainActivity : ComponentActivity() {
                     WorkorDieApp(viewModel)
                 }
                 //WorkorDieApp()
+
+
             }
+            val channelId = "notification"
+
+            // 確認是否為Android 8.0以上版本
+            // 8.0以上版本才需要建立通知渠道
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Create the NotificationChannel
+                //設定通知渠道名稱、描述和重要性
+                val name = "test"
+                val descriptionText = "notify"
+                val importance = NotificationManager.IMPORTANCE_DEFAULT
+                val mChannel = NotificationChannel(channelId, name, importance)
+                mChannel.description = descriptionText
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+                val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.createNotificationChannel(mChannel)
+            }
+
+            val builder = NotificationCompat.Builder(this, channelId)
+                .setContentTitle("Title")
+                .setContentText("Content Text")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            /*val button = findViewById<Button>(R.id.button)
+            button.setOnClickListener {
+                with(NotificationManagerCompat.from(this)) {
+                    // notificationId is a unique int for each notification that you must define
+                    val notificationId = 10
+                    notify(notificationId, builder.build())
+                }
+            }*/
+            val currentTimestamp = System.currentTimeMillis()
+            //if(currentTimestamp == )
         }
+
+
+
+
     }
 }
 
-//@OptIn(ExperimentalTime::class)
+@OptIn(ExperimentalTime::class)
 @Composable
 fun WorkorDieApp(viewModel: TaskViewModel){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
 
-    //val viewModel: MainViewModel = viewModel()
+    val CountTimeviewModel: AccumulateTimeViewModel = viewModel()
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
     NavHost(
@@ -70,6 +122,9 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.AddTask.route){
             AddTask(navController = navController, viewModel = viewModel)
         }
+        composable(route = NavScreen.SubtaskDetail.route){
+            SubtaskDetail(navController = navController)
+        }
         composable(route = NavScreen.FinishSubmit.route){
             FinishSubmit(navController = navController)
         }
@@ -83,7 +138,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
             Calendar(navController = navController)
         }
         composable(route = NavScreen.DailyTask.route){
-            DailyTask()
+            DailyTask(navController = navController)
         }
         composable(route = NavScreen.Settings.route){
             Setting(navController = navController)
@@ -91,16 +146,16 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.Profile.route){
             Profile(navController = navController)
         }
-        /*composable(route = NavScreen.CountdownTime.route){
-            MyApp(navController = navController)
+        composable(route = NavScreen.CountdownTime.route){
+            CountdownTimer(navController = navController)
         }
         composable(route = NavScreen.AccumulateTime.route){
 
-            com.example.workordie.ui.accumulateTime.MainApp(
-                viewModel = viewModel,
+            AccumulateTimer(
+                viewModel = CountTimeviewModel,
                 navController = navController
             )
-        }*/
+        }
     }
 }
 

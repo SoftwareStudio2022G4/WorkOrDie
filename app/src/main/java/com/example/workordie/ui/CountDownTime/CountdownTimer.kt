@@ -12,6 +12,7 @@ import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -29,26 +30,25 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 import com.example.workordie.R
+import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
 import com.example.workordie.ui.CountDownTime.utils.TimeFormatUtils
 import com.example.workordie.ui.screen.NavScreen
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlin.math.cos
 import kotlin.math.sin
 
-/**
- * Description:
- * Home
- *
- * @author Alpinist Wang
- * Date:    2021/3/5
- */
 
 // Start building your app here!
 @Composable
 fun CountdownTimer(navController : NavController) {
     val viewModel: CountDownTimeViewModel = viewModel()
+    val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
+
+
+
     Scaffold(
-        Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
 
@@ -84,12 +84,8 @@ fun CountdownTimer(navController : NavController) {
                 onClick = { navController.navigate(NavScreen.FinishPopup.route) },
                 modifier = Modifier
                     .width(150.dp)
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(0xFFFBE8A6),
-                    contentColor = Color.Black)
-
-                ) {
+                    .padding(16.dp))
+                {
                     Text(text = "finish")
                 }
         }

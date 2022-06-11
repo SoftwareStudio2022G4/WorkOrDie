@@ -10,7 +10,7 @@ import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-class MainViewModel : ViewModel() {
+class AccumulateTimeViewModel : ViewModel() {
 
     private var time: Duration = Duration.ZERO
     private lateinit var timer: Timer
@@ -30,9 +30,9 @@ class MainViewModel : ViewModel() {
 
     private fun updateTimeStates() {
         time.toComponents { hours, minutes, seconds, _ ->
-            this@MainViewModel.seconds = seconds.pad()
-            this@MainViewModel.minutes = minutes.pad()
-            this@MainViewModel.hours = hours.toString().padStart(2, '0')
+            this@AccumulateTimeViewModel.seconds = seconds.pad()
+            this@AccumulateTimeViewModel.minutes = minutes.pad()
+            this@AccumulateTimeViewModel.hours = hours.toString().padStart(2, '0')
         }
     }
 
