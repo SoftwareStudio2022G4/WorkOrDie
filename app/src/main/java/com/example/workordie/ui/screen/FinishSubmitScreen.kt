@@ -130,7 +130,6 @@ private fun CardContent(name: String) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
         Text(
             text = "Subtask ",

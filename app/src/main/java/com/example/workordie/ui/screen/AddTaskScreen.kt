@@ -25,7 +25,8 @@ import com.example.workordie.ui.theme.WorkOrDieTheme
 
 
 /* TODO
-*  add subtask textfield
+* add subtask text field
+* button
 * */
 @Composable
 fun AddTask(

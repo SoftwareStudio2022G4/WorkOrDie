@@ -16,15 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+//import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
-
 import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
-import kotlin.time.ExperimentalTime
+//import kotlin.time.ExperimentalTime
 
 @Composable
 fun CountingTime(modifier: Modifier = Modifier, navController : NavController){

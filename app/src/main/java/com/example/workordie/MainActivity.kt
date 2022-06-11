@@ -122,6 +122,9 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.AddTask.route){
             AddTask(navController = navController, viewModel = viewModel)
         }
+        composable(route = NavScreen.SubtaskDetail.route){
+            SubtaskDetail(navController = navController)
+        }
         composable(route = NavScreen.FinishSubmit.route){
             FinishSubmit(navController = navController)
         }
