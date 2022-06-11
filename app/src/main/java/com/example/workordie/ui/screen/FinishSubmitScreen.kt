@@ -31,7 +31,6 @@ the font of button is different from the others
 @Composable
 fun FinishSubmit(navController: NavController){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
-    val scope : CoroutineScope = rememberCoroutineScope()
     Scaffold(scaffoldState = scaffoldState,) {
 
         Column() {
@@ -62,19 +61,19 @@ fun FinishSubmitBody(navController: NavController){
         Text(
             text = "You've added a new task",
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.onSurface,
+            //color = MaterialTheme.colors.onSurface,
             fontSize = 30.sp
         )
         Text(
             text = "CA HW6 !",
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.onSurface,
+            //color = MaterialTheme.colors.onSurface,
             fontSize = 30.sp
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = "with subtasks below:",
-            color = MaterialTheme.colors.onSurface,
+            //color = MaterialTheme.colors.onSurface,
             fontSize = 26.sp
         )
 
@@ -116,7 +115,7 @@ private fun Subtasks(names: List<String> = List(3) { "$it" }) {
 @Composable
 private fun Subtask(name: String) {
     Card(
-        backgroundColor = Yellow100,
+        //backgroundColor = Yellow100,
         shape = RoundedCornerShape(2.dp),
         modifier = Modifier
             .padding(vertical = 1.dp, horizontal = 1.dp)
@@ -134,7 +133,7 @@ private fun CardContent(name: String) {
     ) {
         Text(
             text = "Subtask ",
-            color = Blue900,
+            //color = Blue900,
             fontSize = 22.sp
         )
     }

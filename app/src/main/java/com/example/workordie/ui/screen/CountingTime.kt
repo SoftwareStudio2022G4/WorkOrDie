@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
-import com.example.workordie.ui.accumulateTime.MainViewModel
+import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
 //import kotlin.time.ExperimentalTime

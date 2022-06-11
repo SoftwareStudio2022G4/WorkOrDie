@@ -34,7 +34,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: AccumulateTimeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun AccumulateTimer(viewModel: MainViewModel, navController: NavController) {
+fun AccumulateTimer(viewModel: AccumulateTimeViewModel, navController: NavController) {
     AccumulateTimerContent(
         navController,
         isPlaying = viewModel.isPlaying,
