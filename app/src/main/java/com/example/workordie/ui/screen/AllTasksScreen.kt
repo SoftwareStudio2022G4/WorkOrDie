@@ -60,7 +60,7 @@ fun AlltasksBodyContent(navController: NavController){
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(text = "Task $i")
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
                     Icon(
                         Icons.Default.Menu,
                         contentDescription = "Menu"
@@ -88,7 +88,7 @@ fun AlltasksBodyContent(navController: NavController){
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Text(text = "CA Final")
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
                     Icon(
                         Icons.Default.Menu,
                         contentDescription = "Menu"
@@ -112,7 +112,7 @@ fun AlltasksBodyContent(navController: NavController){
             verticalAlignment = Alignment.CenterVertically
         ){
             Text(text = "Summer Vacation")
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
                 Icon(
                     Icons.Default.Menu,
                     contentDescription = "Menu"

@@ -142,7 +142,7 @@ fun BodyContent(navController : NavController){
             ){
                 Text(text = "Task $i")
                 Text(text = "$i h")
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route)}) {
                     Icon(
                         Icons.Default.Menu,
                         contentDescription = "Menu"

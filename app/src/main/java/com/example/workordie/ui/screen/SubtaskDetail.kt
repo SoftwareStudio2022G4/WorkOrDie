@@ -37,7 +37,7 @@ fun SubtaskDetail(navController : NavController){
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            SubtaskTopBar(scaffoldState = scaffoldState)
+            SubtaskTopBar(scaffoldState = scaffoldState, navController)
         },
         content = {
             SubtaskContent(navController)
@@ -46,7 +46,7 @@ fun SubtaskDetail(navController : NavController){
 }
 
 @Composable
-fun SubtaskTopBar(scaffoldState: ScaffoldState){
+fun SubtaskTopBar(scaffoldState: ScaffoldState, navController: NavController){
     scaffoldState.drawerState
 
     TopAppBar(
@@ -58,7 +58,7 @@ fun SubtaskTopBar(scaffoldState: ScaffoldState){
                 horizontalArrangement = Arrangement.End
             ){
                 IconButton(
-                    onClick = {/*navController.navigate(NavScreen.CountingTime.route)*/ }
+                    onClick = {navController.navigate(NavScreen.Home.route) }
                 ) {
                     Icon(
                         Icons.Filled.ArrowBackIos,
@@ -72,6 +72,7 @@ fun SubtaskTopBar(scaffoldState: ScaffoldState){
 
 @Composable
 fun SubtaskContent(navController : NavController){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,7 +90,7 @@ fun SubtaskContent(navController : NavController){
         Spacer(modifier = Modifier.height(48.dp))
         val backgroundShape = RoundedCornerShape(6.dp)
         Button(
-            onClick = {/*TODO*/},
+            onClick = {},
             /*modifier = Modifier.width(220.dp).height(60.dp)*/
             contentPadding = PaddingValues(
                 start = 30.dp,
@@ -178,7 +179,7 @@ fun SubtaskContent(navController : NavController){
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { navController.navigate(NavScreen.AllTasks.route) },
                 modifier = Modifier
                     .width(150.dp)
                     .height(48.dp)
@@ -195,7 +196,7 @@ fun SubtaskContent(navController : NavController){
                 )
             }
             Spacer(modifier = Modifier.width(20.dp))
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { navController.navigate(NavScreen.CountingTime.route) },
                 modifier = Modifier
                     .width(150.dp)
                     .height(48.dp)
