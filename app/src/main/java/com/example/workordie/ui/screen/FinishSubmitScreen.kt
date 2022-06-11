@@ -8,20 +8,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.workordie.ui.theme.Blue900
-import com.example.workordie.ui.theme.WorkOrDieTheme
-import com.example.workordie.ui.theme.Yellow100
-import kotlinx.coroutines.CoroutineScope
 
 /*TODO:
 shadow of button
@@ -29,12 +21,19 @@ the font of button is different from the others
 */
 
 @Composable
-fun FinishSubmit(navController: NavController){
+fun FinishSubmit(
+    navController: NavController,
+    taskName: String?,
+    taskType: String?
+){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold(scaffoldState = scaffoldState,) {
-
         Column() {
-            FinishSubmitBody(navController = navController)
+            FinishSubmitBody(
+                navController = navController,
+                taskName = taskName,
+                taskType = taskType
+            )
             Button(
                 onClick = { navController.navigate(NavScreen.Home.route) }
             ) {
@@ -50,7 +49,11 @@ fun FinishSubmit(navController: NavController){
 
 }
 @Composable
-fun FinishSubmitBody(navController: NavController){
+fun FinishSubmitBody(
+    navController: NavController,
+    taskName: String?,
+    taskType: String?
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +68,7 @@ fun FinishSubmitBody(navController: NavController){
             fontSize = 30.sp
         )
         Text(
-            text = "CA HW6 !",
+            text = "$taskName ${taskType}!",
             fontWeight = FontWeight.Bold,
             //color = MaterialTheme.colors.onSurface,
             fontSize = 30.sp
@@ -139,10 +142,10 @@ private fun CardContent(name: String) {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFEFBEF)
+/*@Preview(showBackground = true, backgroundColor = 0xFFFEFBEF)
 @Composable
 fun FinishSubmitPreview() {
     WorkOrDieTheme {
         FinishSubmit(rememberNavController())
     }
-}
+}*/
