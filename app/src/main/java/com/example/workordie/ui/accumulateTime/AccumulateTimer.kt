@@ -74,8 +74,9 @@ private fun AccumulateTimerContent(
     onStop: () -> Unit = {},
 ) {
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
-    val scope : CoroutineScope = rememberCoroutineScope()
-    Scaffold(Modifier.fillMaxSize()) {
+
+    Scaffold(scaffoldState = scaffoldState) {
+
 
         TopAppBar(
             title = {
@@ -89,8 +90,7 @@ private fun AccumulateTimerContent(
 
                 }
             },
-            backgroundColor = Color(0xFFFBE8A6),
-            contentColor = Color.Black
+
             )
 
         Column(
@@ -144,9 +144,7 @@ private fun AccumulateTimerContent(
                             modifier = Modifier
                                 .width(150.dp)
                                 .padding(16.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                backgroundColor = Color(0xFFFBE8A6),
-                                contentColor = Color.Black)) {
+                            ) {
                             Text(text = "start")
                         }
                 }
@@ -155,9 +153,7 @@ private fun AccumulateTimerContent(
                     modifier = Modifier
                         .width(150.dp)
                         .padding(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFFFBE8A6),
-                        contentColor = Color.Black)
+
 
                 ) {
                     Text(text = "stop")
@@ -169,9 +165,7 @@ private fun AccumulateTimerContent(
                 modifier = Modifier
                     .width(150.dp)
                     .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(0xFFFBE8A6),
-                    contentColor = Color.Black)
+
 
             ) {
                 Text(text = "finish")
