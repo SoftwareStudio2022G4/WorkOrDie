@@ -15,4 +15,5 @@ sealed class NavScreen(val route : String) {
     object Settings : NavScreen("settings")
     object CountdownTime : NavScreen("countdown")
     object AccumulateTime : NavScreen("accumulate")
+    object GoogleSignIn : NavScreen("google_sign_in")
 }

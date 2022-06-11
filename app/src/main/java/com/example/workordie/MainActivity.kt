@@ -24,6 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountdownTimer
+import com.example.workordie.ui.GoogleSignIn.SignInViewModel
 import com.example.workordie.ui.accumulateTime.AccumulateTimer
 import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
 import com.example.workordie.ui.screen.*
@@ -105,59 +106,62 @@ fun WorkorDieApp(viewModel: TaskViewModel){
     //State Hoisting
     //use navController to navigate between screens
     val navController = rememberNavController()
-
+    val signInViewModel : SignInViewModel = viewModel()
     val CountTimeviewModel: AccumulateTimeViewModel = viewModel()
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
     NavHost(
         navController = navController,
         startDestination = NavScreen.Home.route
-    ){
-        composable(route = NavScreen.Home.route){
+    ) {
+        composable(route = NavScreen.Home.route) {
             Home(navController = navController)
         }
-        composable(route = NavScreen.AllTasks.route){
+        composable(route = NavScreen.AllTasks.route) {
             AllTasks(navController = navController)
         }
-        composable(route = NavScreen.AddTask.route){
+        composable(route = NavScreen.AddTask.route) {
             AddTask(navController = navController, viewModel = viewModel)
         }
-        composable(route = NavScreen.SubtaskDetail.route){
+        composable(route = NavScreen.SubtaskDetail.route) {
             SubtaskDetail(navController = navController)
         }
-        composable(route = NavScreen.FinishSubmit.route){
+        composable(route = NavScreen.FinishSubmit.route) {
             FinishSubmit(navController = navController)
         }
-        composable(route = NavScreen.FinishPopup.route){
+        composable(route = NavScreen.FinishPopup.route) {
             FinishPopup(navController = navController)
         }
-        composable(route = NavScreen.CountingTime.route){
+        composable(route = NavScreen.CountingTime.route) {
             CountingTime(navController = navController)
         }
-        composable(route = NavScreen.Calendar.route){
+        composable(route = NavScreen.Calendar.route) {
             Calendar(navController = navController)
         }
-        composable(route = NavScreen.DailyTask.route){
+        composable(route = NavScreen.DailyTask.route) {
             DailyTask(navController = navController)
         }
-        composable(route = NavScreen.Settings.route){
+        composable(route = NavScreen.Settings.route) {
             Setting(navController = navController)
         }
-        composable(route = NavScreen.Profile.route){
+        composable(route = NavScreen.Profile.route) {
             Profile(navController = navController)
         }
-        composable(route = NavScreen.CountdownTime.route){
+        composable(route = NavScreen.CountdownTime.route) {
             CountdownTimer(navController = navController)
         }
-        composable(route = NavScreen.AccumulateTime.route){
+        composable(route = NavScreen.AccumulateTime.route) {
 
             AccumulateTimer(
                 viewModel = CountTimeviewModel,
                 navController = navController
             )
         }
-        composable(route = NavScreen.SubtaskDetail.route){
+        composable(route = NavScreen.SubtaskDetail.route) {
             SubtaskDetail(navController = navController)
+        }
+        composable(route = NavScreen.GoogleSignIn.route) {
+            SignInScreen(signInViewModel = signInViewModel)
         }
     }
 }
