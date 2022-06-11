@@ -84,12 +84,8 @@ fun CountdownTimer(navController : NavController) {
                 onClick = { navController.navigate(NavScreen.FinishPopup.route) },
                 modifier = Modifier
                     .width(150.dp)
-                    .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    backgroundColor = Color(0xFFFBE8A6),
-                    contentColor = Color.Black)
-
-                ) {
+                    .padding(16.dp))
+                {
                     Text(text = "finish")
                 }
         }

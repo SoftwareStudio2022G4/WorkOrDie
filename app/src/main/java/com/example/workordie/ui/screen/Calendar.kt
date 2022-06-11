@@ -44,7 +44,7 @@ fun Calendar(navController : NavController) {
 
                 title = {
 
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
+                    //Icon(Icons.Filled.ArrowBack, "backIcon")
                     Spacer(modifier = Modifier.width(240.dp))
                     Text("Calendar", )
                         },

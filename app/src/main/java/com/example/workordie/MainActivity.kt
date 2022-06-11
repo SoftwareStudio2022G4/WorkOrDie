@@ -25,7 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountdownTimer
 import com.example.workordie.ui.accumulateTime.AccumulateTimer
-import com.example.workordie.ui.accumulateTime.MainViewModel
+import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
 import com.example.workordie.ui.screen.*
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import java.time.Instant
@@ -106,7 +106,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
     //use navController to navigate between screens
     val navController = rememberNavController()
 
-    val CountTimeviewModel: MainViewModel = viewModel()
+    val CountTimeviewModel: AccumulateTimeViewModel = viewModel()
     //NavHost holds the NavGraph
     //list the screen you want to navigate below
     NavHost(

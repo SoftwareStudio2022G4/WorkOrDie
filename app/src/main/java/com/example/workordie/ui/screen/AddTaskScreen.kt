@@ -100,12 +100,12 @@ fun AddTask(
                 label = { Text(text = "Name") },
                 placeholder = { Text(text = "Probability") }
             )
-            /*OutlinedTextField(
+            OutlinedTextField(
                 value = taskTypeState,
                 onValueChange = { taskTypeState = it },
                 label = { Text(text = "Type") },
                 placeholder = { Text(text = "HW") }
-            )*/
+            )
             OutlinedTextField(
                 value = taskDeadlineState,
                 onValueChange = { taskDeadlineState = it },
