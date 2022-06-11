@@ -160,6 +160,9 @@ fun WorkorDieApp(viewModel: TaskViewModel){
                 navController = navController
             )
         }
+        composable(route = NavScreen.SubtaskDetail.route){
+            SubtaskDetail(navController = navController)
+        }
     }
 }
 

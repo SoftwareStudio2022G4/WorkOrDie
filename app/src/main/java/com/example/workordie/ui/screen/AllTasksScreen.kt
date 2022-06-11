@@ -75,6 +75,23 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
         }
         tasksList?.forEach { item ->
             Row(
+//                 horizontalArrangement = Arrangement.spacedBy(20.dp),
+//                 verticalAlignment = Alignment.CenterVertically
+//             ){
+//                 Text(text = "Task $i")
+//                 IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+//                     Icon(
+//                         Icons.Default.Menu,
+//                         contentDescription = "Menu"
+//                     )
+//                 }
+//                 IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+//                     Icon(
+//                         Icons.Default.PlayArrow,
+//                         contentDescription = "PlayButton"
+//                     )
+//                 }
+
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
                 Text(text = "${item.id}")
@@ -83,6 +100,7 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
                 Text(text = item.startDate)
                 Text(text = item.endDate)
                 Text(text = "${item.totalTimeSpent}")
+
             }
         }
     }
@@ -121,18 +139,12 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
 
 //         Spacer(modifier = Modifier.height(40.dp))
 
-//         Text(
-//             text = "Recommend to Start:",
-//             fontSize = 30.sp,
-//             textAlign = TextAlign.Right
-//         )
-
 //         Row(
 //                 horizontalArrangement = Arrangement.spacedBy(20.dp),
 //                 verticalAlignment = Alignment.CenterVertically
 //             ){
 //                 Text(text = "CA Final")
-//                 IconButton(onClick = { /*TODO*/ }) {
+//                 IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
 //                     Icon(
 //                         Icons.Default.Menu,
 //                         contentDescription = "Menu"
@@ -150,6 +162,26 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
 //             fontSize = 30.sp,
 //             textAlign = TextAlign.Right
 //         )
+
+//         Row(
+//             horizontalArrangement = Arrangement.spacedBy(20.dp),
+//             verticalAlignment = Alignment.CenterVertically
+//         ){
+//             Text(text = "Summer Vacation")
+//             IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+//                 Icon(
+//                     Icons.Default.Menu,
+//                     contentDescription = "Menu"
+//                 )
+//             }
+//             IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+//                 Icon(
+//                     Icons.Default.PlayArrow,
+//                     contentDescription = "PlayButton"
+//                 )
+//             }
+//         }
+
 
 //         Row(
 //             horizontalArrangement = Arrangement.spacedBy(20.dp),
