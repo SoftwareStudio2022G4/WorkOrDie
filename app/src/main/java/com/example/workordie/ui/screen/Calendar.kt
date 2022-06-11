@@ -11,6 +11,9 @@ import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import java.util.*
 
 
@@ -44,7 +48,11 @@ fun Calendar(navController : NavController) {
                         },
                 backgroundColor = Color(0xFFFBE8A6))
                  },
-        content = { CalendarContent(navController = navController) }
+
+        content = { CalendarContent(navController = navController) },
+        bottomBar = {
+            CalendarBottomBar(navController)
+        }
     )
 }
 
@@ -116,13 +124,13 @@ fun CalendarContent(navController : NavController){
         }*/
         //Text(text = "test: ${mDate.value}")
         if(mDate.value == ""){
-            Button(onClick = {navController.navigate(NavScreen.dailyTask.route)},
+            Button(onClick = {navController.navigate(NavScreen.DailyTask.route)},
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFEFBEF))) {
                 Text(text = "Go")
             }
         }
         else{
-            Button(onClick = {navController.navigate(NavScreen.dailyTask.route)},
+            Button(onClick = {navController.navigate(NavScreen.DailyTask.route)},
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFFBE8A6))) {
                 Text(text = "Go")
             }
@@ -131,11 +139,68 @@ fun CalendarContent(navController : NavController){
 
 
 }
+@Composable
+fun CalendarBottomBar(navController : NavController){
+    val selectedIndex = remember { mutableStateOf(2) }
+    BottomNavigation(
+        elevation = 10.dp
+    ) {
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Edit ,
+                    contentDescription = "All Tasks"
+                )
+            },
+            label = {
+                Text(text = "All Tasks")
+            },
+            selected = (selectedIndex.value == 0),
+            onClick = {
+                selectedIndex.value = 0
+                navController.navigate(NavScreen.AllTasks.route)
+            }
+        )
 
+        BottomNavigationItem(
+            icon = {
+                Icon(imageVector = Icons.Default.CheckCircle,
+                    contentDescription = "Today's Task"
+                )
+            },
+            label = {
+                Text(text = "Today's Task")
+            },
+            selected = (selectedIndex.value == 1),
+            onClick = {
+                selectedIndex.value = 1
+                navController.navigate(NavScreen.Home.route)
+            }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.DateRange,
+                    contentDescription = "Calendar"
+                )
+            },
+            label = {
+                Text(text = "Calendar")
+            },
+            selected = (selectedIndex.value == 2),
+            onClick = {
+                selectedIndex.value = 2
+                navController.navigate(NavScreen.Calendar.route)
+            }
+        )
+    }
+}
 // For displaying preview in
 // the Android Studio IDE emulator
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun CalendarPreview() {
     //MainContent(navController = NavController)
+    Calendar(rememberNavController())
 }

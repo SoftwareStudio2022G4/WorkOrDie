@@ -20,7 +20,7 @@ fun AllTasks(navController: NavController){
             AlltasksBodyContent()
         },
         bottomBar = {
-            AllTasksBottomBar()
+            AllTasksBottomBar(navController)
         }
     )
 }
@@ -31,7 +31,7 @@ fun AlltasksBodyContent(){
 }
 
 @Composable
-fun AllTasksBottomBar(){
+fun AllTasksBottomBar(navController: NavController){
     val selectedIndex = remember { mutableStateOf(0) }
     BottomNavigation(
         elevation = 10.dp
@@ -49,6 +49,7 @@ fun AllTasksBottomBar(){
             selected = (selectedIndex.value == 0),
             onClick = {
                 selectedIndex.value = 0
+                navController.navigate(NavScreen.AllTasks.route)
             }
         )
 
@@ -64,6 +65,7 @@ fun AllTasksBottomBar(){
             selected = (selectedIndex.value == 1),
             onClick = {
                 selectedIndex.value = 1
+                navController.navigate(NavScreen.Home.route)
             }
         )
 
@@ -80,6 +82,7 @@ fun AllTasksBottomBar(){
             selected = (selectedIndex.value == 2),
             onClick = {
                 selectedIndex.value = 2
+                navController.navigate(NavScreen.Calendar.route)
             }
         )
     }
