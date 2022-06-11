@@ -1,7 +1,9 @@
 package com.example.workordie.ui.screen
 
-
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -11,13 +13,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.workordie.ui.theme.Blue900
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import com.example.workordie.ui.theme.Yellow100
+import com.example.workordie.ui.theme.Yellow50
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -113,27 +120,120 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
 @Composable
 fun BodyContent(navController : NavController){
     val date = Date()
-    val formatter = SimpleDateFormat("MMM dd")
-    val dateString: String = formatter.format(date)
+    val formatterMonth = SimpleDateFormat("MMM")
+    val formatterDay = SimpleDateFormat("dd")
+    val monthString: String = formatterMonth.format(date)
+    val dayString: String = formatterDay.format(date)
 
-    
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = dateString,
-            modifier = Modifier,
-            fontSize = 36.sp,
-            textAlign = TextAlign.Center
-        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Row(
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = monthString,
+                color = MaterialTheme.colors.onSurface,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+            Text(
+                text = dayString,
+                color = MaterialTheme.colors.onSurface,
+                fontWeight = FontWeight.Bold,
+                fontSize = 48.sp
+            )
+        }
+        Spacer(modifier = Modifier.height(12.dp))
 
+        /*Today's task table*/
+        TaskTable()
+        Spacer(modifier = Modifier.height(40.dp))
+        Column() {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(40.dp)
+            ) {
+                Text(text = "Finished Tasks")
+                Text(text = "Time spent")
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(140.dp)
+            ) {
+                Text(
+                    text = "Task 0",
+                    textAlign = TextAlign.Left
+                )
+                Text(
+                    text = "3h",
+                    textAlign = TextAlign.Right
+                )
+            }
+        }
+        //testing only
+        Button(
+            onClick = {
+                navController.navigate(NavScreen.CountingTime.route)
+            }
+        ) {
+            Text(text = "test for Counting")
+        }
+    }
+}
 
-        Text(
-            text = "Today's Task:",
-            fontSize = 30.sp,
-            textAlign = TextAlign.Right
-        )
+@Composable
+private fun TaskTable(names: List<String> = List(1) { "$it" }) {
+    LazyColumn {
+        items(items = names) {name ->
+            Task(name = name)
+        }
+    }
+}
+
+@Composable
+private fun Task(name: String) {
+    val backgroundShape = RoundedCornerShape(6.dp)
+    Card(
+        backgroundColor = Yellow100,
+        shape = RoundedCornerShape(6.dp),
+        modifier = Modifier
+            .padding(vertical = 1.dp, horizontal = 1.dp)
+            .size(width = 340.dp, height = 180.dp)
+            .shadow(12.dp, backgroundShape)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(
+                text = "Today's Task:",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Left,
+                color = Blue900,
+                modifier = Modifier.padding(bottom = 6.dp)
+            )
+            Card(
+                backgroundColor = Yellow50,
+                modifier = Modifier
+                    .size(width = 340.dp, height = 180.dp)
+                    //.padding(top = 24.dp)
+            ){}
+        }
+        TaskContent(name)
+    }
+}
+
+@Composable
+private fun TaskContent(name: String) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(28.dp))
         for(i in 1..3){
             Row(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
@@ -155,42 +255,9 @@ fun BodyContent(navController : NavController){
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        Column() {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(40.dp)
-            ) {
-                Text(text = "Finished Tasks")
-                Text(text = "Time spent")
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(140.dp)
-            ) {
-                Text(
-                    text = "Task 0",
-                    textAlign = TextAlign.Left
-                )
-
-                Text(
-                    text = "3h",
-                    textAlign = TextAlign.Right
-                )
-            }
-        }
-
-        //testing only
-        Button(
-            onClick = {
-                navController.navigate(NavScreen.CountingTime.route)
-            }
-        ) {
-            Text(text = "test for Counting")
-        }
     }
-}
 
+}
 @Composable
 fun DrawerContent(){
     Text(text = "Drawer Menu 1")
