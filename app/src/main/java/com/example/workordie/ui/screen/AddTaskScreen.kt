@@ -1,14 +1,14 @@
 package com.example.workordie.ui.screen
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -17,16 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.example.workordie.TaskViewModel
 import com.example.workordie.model.Task
-import com.example.workordie.ui.theme.WorkOrDieTheme
 
 
 /* TODO
 * add subtask text field
-* button
 * */
 @Composable
 fun AddTask(
@@ -40,16 +36,13 @@ fun AddTask(
     var taskStartDateState by rememberSaveable { mutableStateOf("") }
 
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
-    Scaffold (
-        scaffoldState = scaffoldState) {
+    Scaffold (scaffoldState = scaffoldState) {
         TopAppBar(
             title = { },
             modifier = Modifier,
             navigationIcon = {
                 IconButton(
-                    onClick = {
-                        navController.popBackStack()
-                    }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -60,7 +53,9 @@ fun AddTask(
         )
 
         Column(
-            modifier = Modifier.padding(70.dp),
+            modifier = Modifier
+                .padding(70.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ){
             Text(
@@ -73,7 +68,12 @@ fun AddTask(
             val disabledValue = "GE"
             var selectedIndex by remember { mutableStateOf(0) }
             Box() {
-                Text(items[selectedIndex],modifier = Modifier.fillMaxWidth().clickable(onClick = { expanded = true }))
+                Text(
+                    text = items[selectedIndex],
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = { expanded = true })
+                )
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
@@ -82,6 +82,7 @@ fun AddTask(
                     items.forEachIndexed { index, s ->
                         DropdownMenuItem(onClick = {
                             selectedIndex = index
+                            taskNameState = items[index]
                             expanded = false
                         }) {
                             val disabledText = if (s == disabledValue) {
@@ -99,7 +100,8 @@ fun AddTask(
                 value = taskNameState,
                 onValueChange = { taskNameState = it },
                 label = { Text(text = "Name") },
-                placeholder = { Text(text = "Probability") }
+                placeholder = { Text(text = "Probability") },
+                readOnly = true
             )
             OutlinedTextField(
                 value = taskTypeState,
@@ -143,7 +145,13 @@ fun AddTask(
                     viewModel.insert(task)
                     navController.navigate(NavScreen.FinishSubmit.route)
                 },
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                enabled = (
+                        taskNameState != "" &&
+                        taskTypeState != "" &&
+                        taskStartDateState != "" &&
+                        taskTimeState != "" &&
+                        taskDeadlineState != "" )
             ) {
                 Text(text = "submit")
             }
