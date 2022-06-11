@@ -1,14 +1,14 @@
 package com.example.workordie.ui.screen
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -17,16 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.example.workordie.TaskViewModel
 import com.example.workordie.model.Task
-import com.example.workordie.ui.theme.WorkOrDieTheme
 
 
 /* TODO
 * add subtask text field
-* button
 * */
 @Composable
 fun AddTask(
@@ -40,16 +36,13 @@ fun AddTask(
     var taskStartDateState by rememberSaveable { mutableStateOf("") }
 
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
-    Scaffold (
-        scaffoldState = scaffoldState) {
+    Scaffold (scaffoldState = scaffoldState) {
         TopAppBar(
             title = { },
             modifier = Modifier,
             navigationIcon = {
                 IconButton(
-                    onClick = {
-                        navController.popBackStack()
-                    }
+                    onClick = { navController.popBackStack() }
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
@@ -60,7 +53,9 @@ fun AddTask(
         )
 
         Column(
-            modifier = Modifier.padding(70.dp),
+            modifier = Modifier
+                .padding(70.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ){
             Text(
@@ -73,7 +68,12 @@ fun AddTask(
             val disabledValue = "GE"
             var selectedIndex by remember { mutableStateOf(0) }
             Box() {
-                Text(items[selectedIndex],modifier = Modifier.fillMaxWidth().clickable(onClick = { expanded = true }))
+                Text(
+                    text = items[selectedIndex],
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = { expanded = true })
+                )
                 DropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
@@ -82,6 +82,7 @@ fun AddTask(
                     items.forEachIndexed { index, s ->
                         DropdownMenuItem(onClick = {
                             selectedIndex = index
+                            taskNameState = items[index]
                             expanded = false
                         }) {
                             val disabledText = if (s == disabledValue) {
@@ -99,32 +100,33 @@ fun AddTask(
                 value = taskNameState,
                 onValueChange = { taskNameState = it },
                 label = { Text(text = "Name") },
-                placeholder = { Text(text = "Probability") }
+                placeholder = { Text(text = "Click Choose Subject") },
+                readOnly = true
             )
             OutlinedTextField(
                 value = taskTypeState,
                 onValueChange = { taskTypeState = it },
                 label = { Text(text = "Type") },
-                placeholder = { Text(text = "HW") }
+                placeholder = { Text(text = "ex. HW") }
             )
             OutlinedTextField(
                 value = taskDeadlineState,
                 onValueChange = { taskDeadlineState = it },
                 label = { Text(text = "Deadline") },
-                placeholder = { Text(text = "5/30") }
+                placeholder = { Text(text = "ex. 5/30") }
             )
             OutlinedTextField(
                 value = taskTimeState,
                 onValueChange = { taskTimeState = it },
                 label = { Text(text = "Estimated Time to Finish(in hour)") },
-                placeholder = { Text(text = "5") },
+                placeholder = { Text(text = "ex. 5") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             OutlinedTextField(
                 value = taskStartDateState,
                 onValueChange = { taskStartDateState = it },
                 label = { Text(text = "Estimated Start Date") },
-                placeholder = { Text(text = "5/20") }
+                placeholder = { Text(text = "ex. 5/20") }
             )
             OutlinedTextField(
                 value = "+",
@@ -141,9 +143,15 @@ fun AddTask(
                         totalTimeSpent = 0.0
                     )
                     viewModel.insert(task)
-                    navController.navigate(NavScreen.FinishSubmit.route)
+                    navController.navigate(NavScreen.FinishSubmit.route + "/${taskNameState}/${taskTypeState}")
                 },
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally)
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                enabled = (
+                        taskNameState != "" &&
+                        taskTypeState != "" &&
+                        taskStartDateState != "" &&
+                        taskTimeState != "" &&
+                        taskDeadlineState != "" )
             ) {
                 Text(text = "submit")
             }
