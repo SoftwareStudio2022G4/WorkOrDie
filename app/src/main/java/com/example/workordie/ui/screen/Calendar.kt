@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -41,16 +42,12 @@ fun Calendar(navController : NavController) {
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-
                 title = {
-
-                    //Icon(Icons.Filled.ArrowBack, "backIcon")
                     Spacer(modifier = Modifier.width(240.dp))
-                    Text("Calendar", )
-                        },
+                    Text(text = "Calendar")
+                },
             )
-                 },
-
+        },
         content = { CalendarContent(navController = navController) },
         bottomBar = {
             CalendarBottomBar(navController)
@@ -88,58 +85,67 @@ fun CalendarContent(navController : NavController){
     // store date in string format
     val mDate = remember { mutableStateOf("") }
 
+    // date format for navigation
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd") // NOTE: use '/' app will crash
+
     // Declaring DatePickerDialog and setting
     // initial values as current values (present year, month and day)
     val mDatePickerDialog = DatePickerDialog(
         mContext,
         { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-            mDate.value = "$mDayOfMonth/${mMonth+1}/$mYear"
+            mDate.value = "$mYear/${mMonth+1}/$mDayOfMonth"
         }, mYear, mMonth, mDay
     )
 
-    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
-
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         // Creating a button that on
         // click displays/shows the DatePickerDialog
-        Button(onClick = {
-            mDatePickerDialog.show()
-        },  ) {
+        Button(
+            onClick = {
+                mDatePickerDialog.show()
+            }
+        ) {
             Text(text = "Open Date Picker")
         }
 
-        // Adding a space of 100dp height
-
         // Displaying the mDate value in the Text
-        Text(text = "Selected Date: ${mDate.value}", fontSize = 30.sp, textAlign = TextAlign.Center)
+        Text(
+            text = "Selected Date: ${mDate.value}",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Center
+        )
+
+        // Adding a space of 500dp height
         Spacer(modifier = Modifier.size(500.dp))
-        /*if(mDate.value == null){
-            Text(text = "hello null")
-        }
-        else if(mDate.value == " "){
-            Text(text = "hello blankspace")
-        }
-        else if(mDate.value == ""){
-            Text(text = "hello nothing")
-        }
-        else{
-            Text(text = "so sad")
-        }*/
-        //Text(text = "test: ${mDate.value}")
+
         if(mDate.value == ""){
-            Button(onClick = {navController.navigate(NavScreen.DailyTask.route)},
-                ) {
+            Button(
+                onClick = {
+                    val date = Date()
+                    val dateString = dateFormat.format(date)
+                    navController.navigate(NavScreen.DailyTask.route + "/$dateString")
+                },
+            ) {
                 Text(text = "Go")
             }
         }
         else{
-            Button(onClick = {navController.navigate(NavScreen.DailyTask.route)},
-                ) {
+            Button(
+                onClick = {
+                    val badDateFormat = SimpleDateFormat("yyyy/MM/dd")
+                    val date = badDateFormat.parse(mDate.value)
+                    val dateString = dateFormat.format(date)
+                    navController.navigate(NavScreen.DailyTask.route + "/${dateString}")
+                }
+            ) {
                 Text(text = "Go")
             }
         }
     }
-
-
 }
 @Composable
 fun CalendarBottomBar(navController : NavController){
@@ -150,7 +156,7 @@ fun CalendarBottomBar(navController : NavController){
         BottomNavigationItem(
             icon = {
                 Icon(
-                    imageVector = Icons.Default.Edit ,
+                    imageVector = Icons.Default.Edit,
                     contentDescription = "All Tasks"
                 )
             },
@@ -166,7 +172,8 @@ fun CalendarBottomBar(navController : NavController){
 
         BottomNavigationItem(
             icon = {
-                Icon(imageVector = Icons.Default.CheckCircle,
+                Icon(
+                    imageVector = Icons.Default.CheckCircle,
                     contentDescription = "Today's Task"
                 )
             },
