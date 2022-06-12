@@ -135,8 +135,19 @@ fun WorkorDieApp(viewModel: TaskViewModel){
                 taskType = taskType
             )
         }
-        composable(route = NavScreen.FinishPopup.route) {
-            FinishPopup(navController = navController)
+        composable(
+            route = NavScreen.FinishPopup.route + "/{pickedId}",
+            arguments = listOf(
+                navArgument(name = "pickedId"){ NavType.StringType }
+            )
+        ) {
+            backStackEntry ->
+            val pickedId = backStackEntry.arguments?.getString("pickedId")
+            FinishPopup(
+                navController = navController,
+                viewModel = viewModel,
+                pickedId = pickedId
+            )
         }
         composable(
             route = NavScreen.CountingTime.route + "/{pickedId}",

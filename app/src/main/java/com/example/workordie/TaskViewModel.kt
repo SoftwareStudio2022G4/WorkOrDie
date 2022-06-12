@@ -27,8 +27,8 @@ class TaskViewModel(application: Application) : ViewModel() {
         repository.insertTask(task)
     }
 
-    fun deleteSingleTaskTest() {
-        repository.deleteSingleTaskTest()
+    fun deleteSingleTaskTest(inputId: Int) {
+        repository.deleteSingleTask(inputId)
     }
 
     fun updateTaskTimeSpent(timeSpent: Long, inputId: Int){

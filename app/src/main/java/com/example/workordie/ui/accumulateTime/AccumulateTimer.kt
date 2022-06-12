@@ -185,7 +185,7 @@ private fun AccumulateTimerContent(
             Button(
                 onClick = {
                     taskViewModel.updateTaskTimeSpent(timeSpent, pickedId!!.toInt())
-                    navController.navigate(NavScreen.FinishPopup.route)
+                    navController.navigate(NavScreen.FinishPopup.route + "/${pickedId}")
                 },
                 modifier = Modifier
                     .width(150.dp)

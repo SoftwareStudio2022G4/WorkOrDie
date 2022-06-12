@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.workordie.TaskViewModel
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
 
@@ -21,20 +22,29 @@ the info box between subtasks and done button
 * */
 
 @Composable
-fun FinishPopup(navController : NavController){
+fun FinishPopup(
+    navController : NavController,
+    viewModel: TaskViewModel,
+    pickedId: String?
+){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
 
     Scaffold(scaffoldState = scaffoldState) {
-
-        Column() {
-            FinishPopupBody(navController = navController)
-
+        Column {
+            FinishPopupBody(
+                navController = navController,
+                viewModel = viewModel,
+                pickedId = pickedId
+            )
         }
-
     }
 }
 @Composable
-fun FinishPopupBody(navController : NavController){
+fun FinishPopupBody(
+    navController : NavController,
+    viewModel: TaskViewModel,
+    pickedId: String?
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +86,10 @@ fun FinishPopupBody(navController : NavController){
 
         //will handle onclick event after finish designing the counting time screen
         Button(
-            onClick = { navController.navigate(NavScreen.Home.route) }
+            onClick = {
+                viewModel.deleteSingleTaskTest(pickedId!!.toInt())
+                navController.navigate(NavScreen.Home.route)
+            }
         ) {
             Text(text = "Done")
             Icon(
@@ -86,10 +99,10 @@ fun FinishPopupBody(navController : NavController){
         }
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun FinishPopupPreview() {
-    WorkOrDieTheme {
-        FinishPopup(navController = rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun FinishPopupPreview() {
+//    WorkOrDieTheme {
+//        FinishPopup(navController = rememberNavController())
+//    }
+//}

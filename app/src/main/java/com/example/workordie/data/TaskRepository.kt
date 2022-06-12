@@ -1,5 +1,6 @@
 package com.example.workordie.data
 
+import android.text.InputType
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.workordie.model.Task
@@ -32,9 +33,9 @@ class TaskRepository(private val taskDao: TaskDAO) {
         }
     }
 
-    fun deleteSingleTaskTest() {
+    fun deleteSingleTask(inputId: Int) {
         coroutineScope.launch(Dispatchers.IO) {
-            taskDao.deleteSingle()
+            taskDao.deleteSingle(inputId)
         }
     }
 
