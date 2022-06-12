@@ -144,8 +144,19 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.Calendar.route) {
             Calendar(navController = navController)
         }
-        composable(route = NavScreen.DailyTask.route) {
-            DailyTask(navController = navController)
+        composable(
+            route = NavScreen.DailyTask.route + "/{pickedDate}",
+            arguments = listOf(
+                navArgument(name = "pickedDate"){ NavType.StringType }
+            )
+        ) {
+            backStackEntry ->
+            val pickedDate = backStackEntry.arguments?.getString("pickedDate")
+            DailyTask(
+                navController = navController,
+                viewModel = viewModel,
+                pickedDate = pickedDate
+            )
         }
         composable(route = NavScreen.Settings.route) {
             Setting(navController = navController)

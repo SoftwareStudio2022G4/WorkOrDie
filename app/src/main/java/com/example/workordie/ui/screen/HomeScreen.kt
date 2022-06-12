@@ -173,7 +173,7 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
                 verticalAlignment = Alignment.CenterVertically
             ){
                 if(CompareDate(task)) {
-                    Text(text = "${task.id}")
+                    Text(text = "${task.taskName}")
                     Text(text = "${task.totalTimeSpent} h")
                     IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route)}) {
                         Icon(
