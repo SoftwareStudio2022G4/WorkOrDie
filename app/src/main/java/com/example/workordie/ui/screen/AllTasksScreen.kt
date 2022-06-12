@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.workordie.TaskViewModel
+import com.example.workordie.model.Task
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountdownTimer
 import com.example.workordie.ui.theme.WorkOrDieTheme
@@ -55,7 +58,7 @@ fun AllTasks(
     )
 }
 
-@Composable
+/*@Composable
 fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
     val tasksList by viewModel.allProducts.observeAsState()
 
@@ -65,22 +68,22 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
         }
         tasksList?.forEach { item ->
             Row(
-//                 horizontalArrangement = Arrangement.spacedBy(20.dp),
-//                 verticalAlignment = Alignment.CenterVertically
-//             ){
-//                 Text(text = "Task $i")
-//                 IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-//                     Icon(
-//                         Icons.Default.Menu,
-//                         contentDescription = "Menu"
-//                     )
-//                 }
-//                 IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-//                     Icon(
-//                         Icons.Default.PlayArrow,
-//                         contentDescription = "PlayButton"
-//                     )
-//                 }
+                 horizontalArrangement = Arrangement.spacedBy(20.dp),
+                 verticalAlignment = Alignment.CenterVertically
+            ){
+                 Text(text = "Task $i")
+                 IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+                     Icon(
+                         Icons.Default.Menu,
+                         contentDescription = "Menu"
+                     )
+                 }
+                 IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                     Icon(
+                         Icons.Default.PlayArrow,
+                         contentDescription = "PlayButton"
+                     )
+                 }
 
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
@@ -94,104 +97,99 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
             }
         }
     }
+}*/
+@Composable
+fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) {
+    val tasksList by viewModel.allProducts.observeAsState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if(tasksList == null){
+            Text(text = "No task yet, go and add 1!")
+        }
+
+        Spacer(modifier = Modifier.height(50.dp))
+        Text(
+            text = "In Progress:",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Right
+        )
+        tasksList?.forEach { item ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "${item.taskName}")
+                Text(text = "${item.taskType}")
+                IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+                    Icon(
+                        Icons.Default.Menu,
+                        contentDescription = "Menu"
+                    )
+                }
+                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                    Icon(
+                        Icons.Default.PlayArrow,
+                        contentDescription = "PlayButton"
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        Text(
+            text = "Recommend to Start:",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Right
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "CA Final")
+            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+                Icon(
+                    Icons.Default.Menu,
+                    contentDescription = "Menu"
+                )
+            }
+            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                Icon(
+                    Icons.Default.PlayArrow,
+                    contentDescription = "PlayButton"
+                )
+            }
+        }
+
+        Text(
+            text = "Not Started:",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Right
+        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "Summer Vacation")
+            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+                Icon(
+                    Icons.Default.Menu,
+                    contentDescription = "Menu"
+                )
+            }
+            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                Icon(
+                    Icons.Default.PlayArrow,
+                    contentDescription = "PlayButton"
+                )
+            }
+        }
+    }
 }
-// fun AlltasksBodyContent(navController: NavController){
-//     Column(
-//         modifier = Modifier.fillMaxSize(),
-//         horizontalAlignment = Alignment.CenterHorizontally
-//     ) {
-//         Spacer(modifier = Modifier.height(50.dp))
-//         Text(
-//             text = "In Progress:",
-//             fontSize = 30.sp,
-//             textAlign = TextAlign.Right
-//         )
-//         for(i in 1..2){
-//             Row(
-//                 horizontalArrangement = Arrangement.spacedBy(20.dp),
-//                 verticalAlignment = Alignment.CenterVertically
-//             ){
-//                 Text(text = "Task $i")
-//                 IconButton(onClick = { /*TODO*/ }) {
-//                     Icon(
-//                         Icons.Default.Menu,
-//                         contentDescription = "Menu"
-//                     )
-//                 }
-//                 IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-//                     Icon(
-//                         Icons.Default.PlayArrow,
-//                         contentDescription = "PlayButton"
-//                     )
-//                 }
-//             }
-//         }
-
-//         Spacer(modifier = Modifier.height(40.dp))
-
-//         Row(
-//                 horizontalArrangement = Arrangement.spacedBy(20.dp),
-//                 verticalAlignment = Alignment.CenterVertically
-//             ){
-//                 Text(text = "CA Final")
-//                 IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-//                     Icon(
-//                         Icons.Default.Menu,
-//                         contentDescription = "Menu"
-//                     )
-//                 }
-//                 IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-//                     Icon(
-//                         Icons.Default.PlayArrow,
-//                         contentDescription = "PlayButton"
-//                     )
-//                 }
-//         }
-//         Text(
-//             text = "Not Started:",
-//             fontSize = 30.sp,
-//             textAlign = TextAlign.Right
-//         )
-
-//         Row(
-//             horizontalArrangement = Arrangement.spacedBy(20.dp),
-//             verticalAlignment = Alignment.CenterVertically
-//         ){
-//             Text(text = "Summer Vacation")
-//             IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-//                 Icon(
-//                     Icons.Default.Menu,
-//                     contentDescription = "Menu"
-//                 )
-//             }
-//             IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-//                 Icon(
-//                     Icons.Default.PlayArrow,
-//                     contentDescription = "PlayButton"
-//                 )
-//             }
-//         }
-
-
-//         Row(
-//             horizontalArrangement = Arrangement.spacedBy(20.dp),
-//             verticalAlignment = Alignment.CenterVertically
-//         ){
-//             Text(text = "Summer Vacation")
-//             IconButton(onClick = { /*TODO*/ }) {
-//                 Icon(
-//                     Icons.Default.Menu,
-//                     contentDescription = "Menu"
-//                 )
-//             }
-//             IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-//                 Icon(
-//                     Icons.Default.PlayArrow,
-//                     contentDescription = "PlayButton"
-//                 )
-//             }
-//         }
-
 
 @Composable
 fun AllTasksBottomBar(navController: NavController){
@@ -250,10 +248,11 @@ fun AllTasksBottomBar(navController: NavController){
         )
     }
 }
-//@Preview(showBackground = true)
-//@Composable
-//fun AllTasksPreview() {
-//    WorkOrDieTheme {
-//        AllTasks(rememberNavController())
-//    }
-//}
+
+/*@Preview(showBackground = true)
+@Composable
+fun AllTasksPreview() {
+    WorkOrDieTheme {
+        AllTasks(rememberNavController())
+    }
+}*/
