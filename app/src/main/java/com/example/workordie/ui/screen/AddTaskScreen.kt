@@ -138,7 +138,7 @@ fun AddTask(
             )
             Button(
                 onClick = {
-                    val fm = SimpleDateFormat("yyyy/mm/dd")
+                    val fm = SimpleDateFormat("yyyy/MM/dd")
                     // try to format start date
                     try {
                         val dt: Date = fm.parse(taskStartDateState)

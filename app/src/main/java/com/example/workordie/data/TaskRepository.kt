@@ -26,14 +26,20 @@ class TaskRepository(private val taskDao: TaskDAO) {
         }
     }
 
-    fun findSingleDayTasks(date: String) {
-        coroutineScope.launch(Dispatchers.Main) {
-            taskResults.value = asyncFindSingleDay(date).await()
+    fun deleteSingleTaskTest() {
+        coroutineScope.launch(Dispatchers.IO) {
+            taskDao.deleteSingle()
         }
     }
 
-    private fun asyncFindSingleDay(date: String): Deferred<List<Task>?> =
+    fun findSingleDayTasks(id: Int) {
+        coroutineScope.launch(Dispatchers.Main) {
+            taskResults.value = asyncFindSingleDay(id).await()
+        }
+    }
+
+    private fun asyncFindSingleDay(id: Int): Deferred<List<Task>?> =
         coroutineScope.async(Dispatchers.IO) {
-            return@async taskDao.getSingleDayTasks(date)
+            return@async taskDao.getSingleDayTasks(id)
         }
 }
