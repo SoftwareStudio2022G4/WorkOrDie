@@ -76,6 +76,8 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation "androidx.room:room-paging:$room_version"
 
+    // Apollo
+    implementation("com.apollographql.apollo3:apollo-runtime:3.3.0")
 
     def nav_version = "2.4.2"
     implementation("androidx.navigation:navigation-compose:$nav_version")
