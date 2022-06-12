@@ -86,6 +86,10 @@ dependencies {
     //viewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
 
+    //google sign in
+    implementation "com.google.android.gms:play-services-auth:19.2.0"
+
     //liveData -- observeAsState()
     implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
 }

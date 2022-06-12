@@ -31,10 +31,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.R
-
+import com.example.workordie.ui.GoogleSignIn.GoogleSignInButton
+import com.example.workordie.ui.GoogleSignIn.User
 
 
 @Composable
@@ -84,7 +87,7 @@ fun ProfileScreen(modifier : Modifier = Modifier, navController : NavController)
                 Row() {
                     Text(text = "Log in to your email")
                     Spacer(modifier = Modifier.width(200.dp))
-                    IconButton(onClick = { TODO()}) {
+                    IconButton(onClick = { navController.navigate(NavScreen.GoogleSignIn.route)}) {
                             Icon(Icons.Filled.ArrowForward, "forwardIcon")
 
                     }
@@ -115,6 +118,8 @@ fun ProfileScreen(modifier : Modifier = Modifier, navController : NavController)
         }
     }
 }
+
+
 @Preview(showBackground = true)
 @Composable
 fun ProfilePreview() {
