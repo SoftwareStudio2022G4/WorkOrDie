@@ -1,0 +1,3 @@
+query GetClasses {
+    get_classes
+}
