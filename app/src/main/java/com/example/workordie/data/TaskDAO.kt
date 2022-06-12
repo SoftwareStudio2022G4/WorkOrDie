@@ -29,7 +29,7 @@ interface TaskDAO {
     @Query("select id from task_list")
     fun getDateDatas(): LiveData<List<Int>>
 
-    @Query("update task_list set total_time_spent = :totalTimeSpent where id = :inputId")
+    @Query("update task_list set total_time_spent = total_time_spent + :totalTimeSpent where id = :inputId")
     fun updateTimeSpent(totalTimeSpent: Long, inputId: Int)
 
     // return value use flow?

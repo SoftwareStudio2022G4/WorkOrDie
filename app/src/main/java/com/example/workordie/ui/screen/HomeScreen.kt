@@ -190,7 +190,7 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
             ){
                 if(CompareDate(task)) {
                     Text(text = "${task.taskName}")
-                    Text(text = "${task.totalTimeSpent} h")
+                    Text(text = "${task.totalTimeSpent} sec")
                     IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route)}) {
                         Icon(
                             Icons.Default.Menu,

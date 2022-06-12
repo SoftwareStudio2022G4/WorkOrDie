@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.R
@@ -47,7 +48,9 @@ fun AccumulateTimer(
         onStart = { viewModel.start() },
         onPause = { viewModel.pause() },
         onStop = { viewModel.stop() },
-        pickedId = pickedId
+        timeSpent = viewModel.timeSpent,
+        pickedId = pickedId,
+        taskViewModel = taskViewModel
     )
 }
 
@@ -62,7 +65,9 @@ private fun AccumulateTimerContent(
     onStart: () -> Unit = {},
     onPause: () -> Unit = {},
     onStop: () -> Unit = {},
-    pickedId: String?
+    timeSpent: Long,
+    pickedId: String?,
+    taskViewModel: TaskViewModel
 ) {
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
 
@@ -72,7 +77,7 @@ private fun AccumulateTimerContent(
                 Text(text = stringResource(id = R.string.app_name))
             },
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/{pickedId}") }) {
+                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${pickedId}") }) {
                     Icon(Icons.Filled.ArrowBack, "backIcon")
                 }
             }
@@ -178,7 +183,10 @@ private fun AccumulateTimerContent(
 
             Spacer(modifier = Modifier.height(180.dp))
             Button(
-                onClick = { navController.navigate(NavScreen.FinishPopup.route) },
+                onClick = {
+                    taskViewModel.updateTaskTimeSpent(timeSpent, pickedId!!.toInt())
+                    navController.navigate(NavScreen.FinishPopup.route)
+                },
                 modifier = Modifier
                     .width(150.dp)
                     .padding(16.dp)
