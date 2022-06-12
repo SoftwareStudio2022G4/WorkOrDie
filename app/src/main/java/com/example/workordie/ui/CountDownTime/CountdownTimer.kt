@@ -121,7 +121,7 @@ fun CountdownTimer(
             Button(
                 onClick = {
                     taskViewModel.updateTaskTimeSpent(viewModel.totalTimeSpent, pickedId!!.toInt())
-                    navController.navigate(NavScreen.FinishPopup.route)
+                    navController.navigate(NavScreen.FinishPopup.route + "/${pickedId}")
                           },
                 modifier = Modifier
                     .width(150.dp)

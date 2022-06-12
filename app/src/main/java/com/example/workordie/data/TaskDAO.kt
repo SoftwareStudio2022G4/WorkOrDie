@@ -23,8 +23,8 @@ interface TaskDAO {
     @Delete
     suspend fun delete(task: Task)
 
-    @Query("delete from task_list where task_type = ''")
-    suspend fun deleteSingle()
+    @Query("delete from task_list where id = :inputId")
+    suspend fun deleteSingle(inputId: Int)
 
     @Query("select id from task_list")
     fun getDateDatas(): LiveData<List<Int>>
