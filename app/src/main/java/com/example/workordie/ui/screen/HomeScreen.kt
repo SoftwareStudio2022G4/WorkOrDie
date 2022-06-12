@@ -36,9 +36,11 @@ https://www.youtube.com/watch?v=UDW4v88V41M
 * */
 
 /* TODO
-cant find suitable icon for All Tasks
-the onclick of bottom bar item should be navigation in the future
+(1) Cant find suitable icon for All Tasks
+(2) The onclick of bottom bar item should be navigation in the future
 body content
+(3) Separate lines in table (optional)
+(4) LazyColumn in function TaskTable to be fixed
 * */
 
 @Composable
@@ -101,7 +103,6 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
                         contentDescription = "Settings"
                     )
                 }
-
                 //profile
                 IconButton(
                     onClick = { }
@@ -112,7 +113,6 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
                     )
                 }
             }
-
         }
     )
 }
@@ -149,37 +149,9 @@ fun BodyContent(navController : NavController){
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
-        /*Today's task table*/
-        TaskTable()
-        Spacer(modifier = Modifier.height(48.dp))
-        Column() {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(40.dp)
-            ) {
-                Text(text = "Finished Tasks")
-                Text(text = "Time spent")
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(140.dp)
-            ) {
-                Text(
-                    text = "Task 0",
-                    textAlign = TextAlign.Left
-                )
-                Text(
-                    text = "3h",
-                    textAlign = TextAlign.Right
-                )
-            }
-        }
-        //testing only
-        Button(
-            onClick = {
-                navController.navigate(NavScreen.CountingTime.route)
-            }
-        ) {
-            Text(text = "test for Counting")
-        }
+        TaskTable() // Today's task table*
+        Spacer(modifier = Modifier.height(24.dp))
+        Summary() // Summary table
     }
 }
 
@@ -187,13 +159,13 @@ fun BodyContent(navController : NavController){
 private fun TaskTable(names: List<String> = List(1) { "$it" }) {
     LazyColumn {
         items(items = names) {name ->
-            Task(name = name)
+            Task()
         }
     }
 }
 
 @Composable
-private fun Task(name: String) {
+private fun Task() {
     val backgroundShape = RoundedCornerShape(6.dp)
     Card(
         backgroundColor = Yellow100,
@@ -204,30 +176,32 @@ private fun Task(name: String) {
             .shadow(12.dp, backgroundShape)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
             Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = "Today's Task:",
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Left,
-                color = Blue900,
-                modifier = Modifier.padding(bottom = 6.dp)
-            )
+            Row() {
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = "Today's Task:",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Left,
+                    color = Blue900,
+                    modifier = Modifier.padding(bottom = 6.dp)
+                )
+            }
             Card(
                 backgroundColor = Yellow50,
                 modifier = Modifier
                     .size(width = 340.dp, height = 180.dp)
-                    //.padding(top = 24.dp)
             ){}
         }
-        TaskContent(name)
+        TaskContent()
     }
 }
 
 @Composable
-private fun TaskContent(name: String) {
+private fun TaskContent() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -265,6 +239,86 @@ private fun TaskContent(name: String) {
     }
 
 }
+
+@Composable
+private fun Summary() {
+    val backgroundShape = RoundedCornerShape(6.dp)
+    Card(
+        backgroundColor = Yellow100,
+        shape = RoundedCornerShape(6.dp),
+        modifier = Modifier
+            .padding(vertical = 1.dp, horizontal = 1.dp)
+            .size(width = 340.dp, height = 90.dp)
+            .shadow(12.dp, backgroundShape)
+    ){
+        Column(
+            horizontalAlignment = Alignment.Start
+        ) {
+            Row() {
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(text = "Finished Tasks",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Blue900,
+                    modifier = Modifier.padding(top = 6.dp, bottom = 6.dp)
+                )
+            }
+            Card(
+                backgroundColor = Yellow50,
+                modifier = Modifier
+                    .size(width = 340.dp, height = 48.dp)
+            ){}
+
+        }
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            Row() {
+                Text(text = "Time spent",
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Blue900,
+                    modifier = Modifier.padding(top = 6.dp, bottom = 6.dp)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+            }
+
+        }
+        SummaryContent()
+    }
+}
+
+@Composable
+private fun SummaryContent() {
+    Column(
+        horizontalAlignment = Alignment.Start
+    ) {
+        Spacer(modifier = Modifier.height(48.dp))
+        Row() {
+            Spacer(modifier = Modifier.width(48.dp))
+            Text(text = "Task 0",
+                fontSize = 20.sp,
+                color = Blue900,
+                modifier = Modifier.padding(bottom = 6.dp)
+            )
+        }
+    }
+    Column(
+        horizontalAlignment = Alignment.End
+    ) {
+        Spacer(modifier = Modifier.height(48.dp))
+        Row() {
+            Text(text = "3 hr",
+                fontSize = 20.sp,
+                color = Blue900,
+                modifier = Modifier.padding(bottom = 6.dp)
+            )
+            Spacer(modifier = Modifier.width(48.dp))
+        }
+
+    }
+}
+
 @Composable
 fun DrawerContent(){
     Text(text = "Drawer Menu 1")
@@ -325,8 +379,6 @@ fun HomeBottomBar(){
         )
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
