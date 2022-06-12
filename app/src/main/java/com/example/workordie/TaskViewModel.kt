@@ -27,8 +27,12 @@ class TaskViewModel(application: Application) : ViewModel() {
         repository.insertTask(task)
     }
 
-    fun findSingleDayTask(date: String) {
-        repository.findSingleDayTasks(date)
+    fun deleteSingleTaskTest() {
+        repository.deleteSingleTaskTest()
+    }
+
+    fun findSingleDayTask(id: Int) {
+        repository.findSingleDayTasks(id)
     }
 
     fun deleteTask(task: Task) {
