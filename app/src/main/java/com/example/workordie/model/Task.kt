@@ -30,7 +30,7 @@ data class Task(
     var endDate: String,
 
     @ColumnInfo(name = "total_time_spent")
-    var totalTimeSpent: Double
+    var totalTimeSpent: Float
 
 )
 
@@ -53,5 +53,5 @@ data class SubTask(
     @NonNull @ColumnInfo(name = "has_done")
     val hasDone: Boolean,
     @ColumnInfo(name = "time_spent")
-    val timeSpent: Double
+    val timeSpent: Float
 )
