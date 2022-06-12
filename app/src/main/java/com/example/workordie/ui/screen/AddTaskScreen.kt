@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.ui.text.input.KeyboardType
+import com.example.rocketreserver.type.CLASSTYPE
 import com.example.workordie.TaskViewModel
 import com.example.workordie.model.Task
 import java.text.ParseException
@@ -37,6 +38,7 @@ fun AddTask(
     var taskDeadlineState by rememberSaveable { mutableStateOf("") }
     var taskTimeState by rememberSaveable { mutableStateOf("") }
     var taskStartDateState by rememberSaveable { mutableStateOf("") }
+    var taskIndexState by rememberSaveable { mutableStateOf("") }
 
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold (scaffoldState = scaffoldState) {
@@ -67,7 +69,7 @@ fun AddTask(
                 fontSize = 36.sp
             )
             var expanded by remember { mutableStateOf(false) }
-            val items = listOf("Choose Subject", "CA", "SS", "Prob", "GE", "English")
+            val items = listOf("Choose Subject", "Computer_Architecture", "Software_Studio", "Probability", "GE", "English")
             val disabledValue = "GE"
             var selectedIndex by remember { mutableStateOf(0) }
             Box() {
@@ -132,6 +134,13 @@ fun AddTask(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             OutlinedTextField(
+                value = taskIndexState,
+                onValueChange = { taskIndexState = it },
+                label = { Text(text = "Which homework is it?") },
+                placeholder = { Text(text = "ex. 2(Homework 2)") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+            OutlinedTextField(
                 value = "+",
                 onValueChange = { },
                 label = { Text(text = "Add subtasks") }
@@ -164,7 +173,8 @@ fun AddTask(
                         taskName = taskNameState,
                         startDate = taskStartDateState,
                         endDate = taskDeadlineState,
-                        totalTimeSpent = 0.0f
+                        totalTimeSpent = 0.0f,
+                        index = taskIndexState.toInt()
                     )
                     viewModel.insert(task)
                     navController.navigate(NavScreen.FinishSubmit.route + "/${taskNameState}/${taskTypeState}")

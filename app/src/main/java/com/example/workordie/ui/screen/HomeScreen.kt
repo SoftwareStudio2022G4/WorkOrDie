@@ -17,11 +17,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.graphql.apolloClient
+import com.example.rocketreserver.*
+import com.example.rocketreserver.type.CLASSTYPE
 import com.example.workordie.TaskViewModel
 import com.example.workordie.model.Task
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -112,6 +117,14 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope, navControl
 
         }
     )
+}
+
+suspend fun ApolloBodyTest() {
+    val input = CLASSTYPE.Probability
+    apolloClient.mutation(DeleteHomeworkMutation(type = input, index = 1)).execute()
+    apolloClient.mutation(DeleteHomeworkMutation(type = input, index = 0)).execute()
+    val response = apolloClient.query(ClassDetailQuery(type = input)).execute()
+    Log.d("LaunchList", "Success ${response.data}")
 }
 
 fun CompareDate(task: Task): Boolean {
@@ -216,6 +229,13 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
         }
 
         //testing only
+        Column() {
+            runBlocking{
+                launch{
+                    ApolloBodyTest()
+                }
+            }
+        }
         Button(
             onClick = {
                 viewModel.deleteSingleTaskTest()

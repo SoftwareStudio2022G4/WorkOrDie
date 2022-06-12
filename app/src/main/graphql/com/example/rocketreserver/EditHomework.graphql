@@ -1,0 +1,8 @@
+mutation EditHomework($type: CLASSTYPE!, $index: Int!, $finishedPeople: Int!, $totalTime: Int!) {
+  edit_homework(type: $type, index: $index, finished_people: $finishedPeople, total_time: $totalTime) {
+    type
+    index
+    finished_people
+    total_time
+  }
+}
