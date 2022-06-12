@@ -82,7 +82,8 @@ fun SubtaskContent(navController : NavController){
         Text(
             text = "Task 1",
             fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colors.onSurface,
+            //don't set the color!! it is set already
+            //or the word may disappear
             fontSize = 35.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -120,16 +121,16 @@ fun SubtaskContent(navController : NavController){
                 contentDescription = "completion icon"
             )
             Text(text = "Completion: ",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             /*TODO (5): update completion from DB*/
             Text(text = "40",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             Text(text = "%",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
@@ -145,12 +146,12 @@ fun SubtaskContent(navController : NavController){
             Spacer(Modifier.width(10.0.dp))
             Text(text = "Deadline: ",
                 textAlign = TextAlign.Start,
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             /*TODO (5): update completion from DB*/
             Text(text = "<date>",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
@@ -165,12 +166,12 @@ fun SubtaskContent(navController : NavController){
             )
             Spacer(Modifier.width(10.0.dp))
             Text(text = "Hours/day: ",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             /*TODO: update completion from DB*/
             Text(text = "<Hrs>",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
@@ -238,7 +239,7 @@ private fun CheckSubtask(name: String) {
             SubtaskCheckbox()
             Text(text = "Subtask",
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp,
                 /*TODO: should fix the check box start location & reorder button,
                 *  rather than setting the padding of the end of subtask*/

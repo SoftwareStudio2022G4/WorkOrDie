@@ -99,6 +99,7 @@ fun ProfileScreen(modifier : Modifier = Modifier, navController : NavController)
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 5.dp)
+                    .height(50.dp)
 
             ){
                 Text(text = "distraction type")
