@@ -1,0 +1,8 @@
+mutation CreateHomework($type: CLASSTYPE!, $index: Int!) {
+  create_homework(type: $type, index: $index) {
+    type
+    index
+    finished_people
+    total_time
+  }
+}
