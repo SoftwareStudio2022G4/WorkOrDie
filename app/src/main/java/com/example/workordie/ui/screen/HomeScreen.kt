@@ -1,6 +1,7 @@
 package com.example.workordie.ui.screen
 
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,9 +18,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.graphql.apolloClient
+import com.example.rocketreserver.GetClassesQuery
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -111,6 +116,11 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope, navControl
     )
 }
 
+suspend fun ApolloBodyTest() {
+    val response = apolloClient.query(GetClassesQuery()).execute()
+    Log.d("LaunchList", "Success ${response.data}")
+}
+
 @Composable
 fun BodyContent(navController : NavController){
     val date = Date()
@@ -182,6 +192,13 @@ fun BodyContent(navController : NavController){
         }
 
         //testing only
+        Column() {
+            runBlocking{
+                launch{
+                    ApolloBodyTest()
+                }
+            }
+        }
         Button(
             onClick = {
                 navController.navigate(NavScreen.Settings.route)
