@@ -149,10 +149,9 @@ fun BodyContent(navController : NavController){
             )
         }
         Spacer(modifier = Modifier.height(12.dp))
-
         /*Today's task table*/
         TaskTable()
-        Spacer(modifier = Modifier.height(40.dp))
+        Spacer(modifier = Modifier.height(48.dp))
         Column() {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(40.dp)
@@ -210,7 +209,7 @@ private fun Task(name: String) {
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 text = "Today's Task:",
-                fontSize = 20.sp,
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Left,
                 color = Blue900,
@@ -231,26 +230,34 @@ private fun Task(name: String) {
 private fun TaskContent(name: String) {
     Column(
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
     ) {
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(36.dp))
         for(i in 1..3){
             Row(
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                horizontalArrangement = Arrangement.spacedBy(30.dp),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Text(text = "Task $i")
-                Text(text = "$i h")
+                Text(text = "Task $i",
+                    fontSize = 18.sp,
+                    color = Blue900)
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(text = "$i h",
+                    fontSize = 18.sp,
+                    color = Blue900)
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Default.Menu,
-                        contentDescription = "Menu"
+                        contentDescription = "Menu",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                 }
                 IconButton(onClick = { /*TODO*/ }) {
                     Icon(
                         Icons.Default.PlayArrow,
-                        contentDescription = "PlayButton"
+                        contentDescription = "PlayButton",
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                 }
             }
