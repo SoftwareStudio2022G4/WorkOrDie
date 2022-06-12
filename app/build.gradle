@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id("com.apollographql.apollo3").version("3.3.0")
 }
 
 android {
@@ -43,6 +44,10 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+}
+
+apollo {
+    packageName.set("com.example.rocketreserver")
 }
 
 apply plugin: 'kotlin-android'
