@@ -1,0 +1,8 @@
+mutation DeleteHomework($type: CLASSTYPE!, $index: Int!) {
+  delete_homework(type: $type, index: $index) {
+    type
+    index
+    finished_people
+    total_time
+  }
+}

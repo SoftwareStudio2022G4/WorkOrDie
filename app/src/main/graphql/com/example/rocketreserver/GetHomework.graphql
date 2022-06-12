@@ -1,0 +1,8 @@
+query GetHomework($type: CLASSTYPE!, $index: Int!) {
+  get_homework(type: $type, index: $index) {
+    type
+    index
+    finished_people
+    total_time
+  }
+}

@@ -19,7 +19,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.graphql.apolloClient
-import com.example.rocketreserver.GetClassesQuery
+import com.example.rocketreserver.*
+import com.example.rocketreserver.type.CLASSTYPE
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
@@ -117,7 +118,10 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope, navControl
 }
 
 suspend fun ApolloBodyTest() {
-    val response = apolloClient.query(GetClassesQuery()).execute()
+    val input = CLASSTYPE.Probability
+    apolloClient.mutation(DeleteHomeworkMutation(type = input, index = 1)).execute()
+    apolloClient.mutation(DeleteHomeworkMutation(type = input, index = 0)).execute()
+    val response = apolloClient.query(ClassDetailQuery(type = input)).execute()
     Log.d("LaunchList", "Success ${response.data}")
 }
 
