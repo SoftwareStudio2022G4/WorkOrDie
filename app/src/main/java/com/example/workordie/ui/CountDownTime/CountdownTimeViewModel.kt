@@ -1,4 +1,5 @@
 package com.example.workordie.ui.CountDownTime
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -33,6 +34,8 @@ class CountDownTimeViewModel : ViewModel() {
 
     var status: IStatus by mutableStateOf(NotStartedStatus(this))
 
+    var totalTimeSpent: Long = 0
+
     /**
      * Temp value when anim is active
      */
@@ -55,5 +58,13 @@ class CountDownTimeViewModel : ViewModel() {
         timeLeft = value.toLong()
         // After user clicks EditText, CompletedStatus turns to NotStartedStatus.
         if (status is CompletedStatus) status = NotStartedStatus(this)
+    }
+
+    fun recordTimeSpent() {
+        if (timeLeft != 0L) {
+
+        }
+        totalTimeSpent += totalTime - timeLeft
+        Log.d("ABCD", "totalTimeSpent = ${totalTimeSpent}")
     }
 }

@@ -58,46 +58,7 @@ fun AllTasks(
     )
 }
 
-/*@Composable
-fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel){
-    val tasksList by viewModel.allProducts.observeAsState()
 
-    Column {
-        if(tasksList == null){
-            Text(text = "No task yet, go and add 1!")
-        }
-        tasksList?.forEach { item ->
-            Row(
-                 horizontalArrangement = Arrangement.spacedBy(20.dp),
-                 verticalAlignment = Alignment.CenterVertically
-            ){
-                 Text(text = "Task $i")
-                 IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-                     Icon(
-                         Icons.Default.Menu,
-                         contentDescription = "Menu"
-                     )
-                 }
-                 IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-                     Icon(
-                         Icons.Default.PlayArrow,
-                         contentDescription = "PlayButton"
-                     )
-                 }
-
-                horizontalArrangement = Arrangement.spacedBy(15.dp)
-            ) {
-                Text(text = "${item.id}")
-                Text(text = item.taskType.toString())
-                Text(text = item.taskName)
-                Text(text = item.startDate)
-                Text(text = item.endDate)
-                Text(text = "${item.totalTimeSpent}")
-
-            }
-        }
-    }
-}*/
 @Composable
 fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) {
     val tasksList by viewModel.allProducts.observeAsState()
@@ -130,7 +91,7 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) 
                         contentDescription = "Menu"
                     )
                 }
-                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${item.id}") }) {
                     Icon(
                         Icons.Default.PlayArrow,
                         contentDescription = "PlayButton"
@@ -141,53 +102,53 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) 
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        Text(
-            text = "Recommend to Start:",
-            fontSize = 30.sp,
-            textAlign = TextAlign.Right
-        )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "CA Final")
-            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-                Icon(
-                    Icons.Default.Menu,
-                    contentDescription = "Menu"
-                )
-            }
-            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-                Icon(
-                    Icons.Default.PlayArrow,
-                    contentDescription = "PlayButton"
-                )
-            }
-        }
-
-        Text(
-            text = "Not Started:",
-            fontSize = 30.sp,
-            textAlign = TextAlign.Right
-        )
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Summer Vacation")
-            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-                Icon(
-                    Icons.Default.Menu,
-                    contentDescription = "Menu"
-                )
-            }
-            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-                Icon(
-                    Icons.Default.PlayArrow,
-                    contentDescription = "PlayButton"
-                )
-            }
-        }
+//        Text(
+//            text = "Recommend to Start:",
+//            fontSize = 30.sp,
+//            textAlign = TextAlign.Right
+//        )
+//        Row(
+//            horizontalArrangement = Arrangement.spacedBy(20.dp),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Text(text = "CA Final")
+//            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+//                Icon(
+//                    Icons.Default.Menu,
+//                    contentDescription = "Menu"
+//                )
+//            }
+//            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+//                Icon(
+//                    Icons.Default.PlayArrow,
+//                    contentDescription = "PlayButton"
+//                )
+//            }
+//        }
+//
+//        Text(
+//            text = "Not Started:",
+//            fontSize = 30.sp,
+//            textAlign = TextAlign.Right
+//        )
+//        Row(
+//            horizontalArrangement = Arrangement.spacedBy(20.dp),
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Text(text = "Summer Vacation")
+//            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+//                Icon(
+//                    Icons.Default.Menu,
+//                    contentDescription = "Menu"
+//                )
+//            }
+//            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+//                Icon(
+//                    Icons.Default.PlayArrow,
+//                    contentDescription = "PlayButton"
+//                )
+//            }
+//        }
     }
 }
 
