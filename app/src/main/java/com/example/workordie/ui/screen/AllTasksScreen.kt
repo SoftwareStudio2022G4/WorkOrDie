@@ -49,16 +49,6 @@ fun AllTasks(
         content = {
             AlltasksBodyContent(navController, viewModel)
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { navController.navigate(NavScreen.AddTask.route) }
-            ){
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "fab icon"
-                )
-            }
-        },
         bottomBar = {
             AllTasksBottomBar(navController)
         }
@@ -260,10 +250,10 @@ fun AllTasksBottomBar(navController: NavController){
         )
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun AllTasksPreview() {
-    WorkOrDieTheme {
-        AllTasks(rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun AllTasksPreview() {
+//    WorkOrDieTheme {
+//        AllTasks(rememberNavController())
+//    }
+//}

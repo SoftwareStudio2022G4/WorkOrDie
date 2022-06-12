@@ -140,7 +140,7 @@ fun AddTask(
                         taskName = taskNameState,
                         startDate = taskStartDateState,
                         endDate = taskDeadlineState,
-                        totalTimeSpent = 0.0
+                        totalTimeSpent = 0.0f
                     )
                     viewModel.insert(task)
                     navController.navigate(NavScreen.FinishSubmit.route + "/${taskNameState}/${taskTypeState}")
