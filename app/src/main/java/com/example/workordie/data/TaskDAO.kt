@@ -23,12 +23,18 @@ interface TaskDAO {
     @Delete
     suspend fun delete(task: Task)
 
+    @Query("delete from task_list where task_type = ''")
+    suspend fun deleteSingle()
+
+//    @Query("select id, start_date, end_date from task_list")
+//    fun getDateDatas(): LiveData<List<Task>>
+
     // return value use flow?
     @Query("select * from task_list")
     fun getAllTasks(): LiveData<List<Task>>
 
-    @Query("select * from task_list where start_date = :inputDate")
-    fun getSingleDayTasks(inputDate: String) : List<Task>
+    @Query("select * from task_list where id = :inputId")
+    fun getSingleDayTasks(inputId: Int) : List<Task>
 
     @Query("select * from task_list inner join subtask_list on task_list.id = subtask_list.parent_task_id where start_date = :inputDate")
     fun getSingleDayTaskWithSubTasks(inputDate: String) : List<TaskWithSubTasks>

@@ -109,7 +109,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         startDestination = NavScreen.Home.route
     ) {
         composable(route = NavScreen.Home.route) {
-            Home(navController = navController)
+            Home(navController = navController, viewModel = viewModel)
         }
         composable(route = NavScreen.AllTasks.route){
             AllTasks(navController = navController, viewModel = viewModel)

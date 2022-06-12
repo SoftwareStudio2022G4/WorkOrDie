@@ -5,6 +5,7 @@ import android.widget.EditText
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -12,6 +13,8 @@ import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,7 +82,35 @@ fun CountdownTimer(navController : NavController) {
                 StartButton(viewModel)
                 StopButton(viewModel)
             }
-
+            for(i in 1..4){
+                val isChecked = remember { mutableStateOf(false) }
+                Row(
+                    modifier = Modifier
+                        .clickable(onClick = {
+                            isChecked.value = !isChecked.value // 點擊文字時也能變更勾選狀態
+                        })
+                        .padding(5.dp),
+                ) {
+                    Checkbox(
+                        checked = isChecked.value, // 是否勾選
+                        enabled = true, // 能否被變更
+                        onCheckedChange = { checked ->
+                            isChecked.value = checked
+                        },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = MaterialTheme.colors.primarySurface, // 勾選時顏色
+                            uncheckedColor = MaterialTheme.colors.primary, // 未勾選時顏色
+                        )
+                    )
+                    Text(
+                        text = "Subtask $i",
+                        color = MaterialTheme.colors.secondaryVariant,
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                }
+            }
             Button(
                 onClick = { navController.navigate(NavScreen.FinishPopup.route) },
                 modifier = Modifier

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -13,10 +14,8 @@ import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.runtime.*
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -124,7 +123,7 @@ private fun AccumulateTimerContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(200.dp))
+            //Spacer(modifier = Modifier.height(50.dp))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
 
@@ -148,6 +147,8 @@ private fun AccumulateTimerContent(
                             Text(text = "start")
                         }
                 }
+
+
                 Button(
                     onClick = onStop,
                     modifier = Modifier
@@ -160,6 +161,37 @@ private fun AccumulateTimerContent(
                 }
 
             }
+            for(i in 1..4){
+                val isChecked = remember { mutableStateOf(false) }
+                Row(
+                    modifier = Modifier
+                        .clickable(onClick = {
+                            isChecked.value = !isChecked.value // 點擊文字時也能變更勾選狀態
+                        })
+                        .padding(8.dp),
+                ) {
+                    Checkbox(
+                        checked = isChecked.value, // 是否勾選
+                        enabled = true, // 能否被變更
+                        onCheckedChange = { checked ->
+                            isChecked.value = checked
+                        },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = MaterialTheme.colors.primarySurface, // 勾選時顏色
+                            uncheckedColor = MaterialTheme.colors.primary, // 未勾選時顏色
+                        )
+                    )
+                    Text(
+                        text = "Subtask $i",
+                        color = MaterialTheme.colors.secondaryVariant,
+                        modifier = Modifier
+                            .padding(start = 5.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(180.dp))
             Button(
                 onClick = { navController.navigate(NavScreen.FinishPopup.route) },
                 modifier = Modifier
@@ -170,10 +202,11 @@ private fun AccumulateTimerContent(
             ) {
                 Text(text = "finish")
             }
-            Spacer(modifier = Modifier.height(232.dp))
+
         }
     }
 }
+
 
 
 @Preview(showBackground = true)
