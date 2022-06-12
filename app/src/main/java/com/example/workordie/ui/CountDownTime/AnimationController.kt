@@ -73,6 +73,7 @@ class AnimatorController(private val viewModel: CountDownTimeViewModel) {
 
     fun complete() {
         LogUtils.d("Complete")
+        viewModel.recordTimeSpent()
         viewModel.totalTime = 0
         viewModel.status = CompletedStatus(viewModel)
     }

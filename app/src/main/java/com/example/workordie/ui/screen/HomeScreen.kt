@@ -162,7 +162,10 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
     val dateString: String = formatter.format(date)
 
     val allTaskList by viewModel.allProducts.observeAsState()
-    
+
+    // test
+    val testtask by viewModel.searchResults.observeAsState()
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -194,7 +197,9 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
                             contentDescription = "Menu"
                         )
                     }
-                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                    IconButton(onClick = {
+                        Log.d("ABCD", "taskId = ${task.id}")
+                        navController.navigate(NavScreen.CountingTime.route + "/${task.id}") }) {
                         Icon(
                             Icons.Default.PlayArrow,
                             contentDescription = "PlayButton"
@@ -206,39 +211,42 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        Column() {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(40.dp)
-            ) {
-                Text(text = "Finished Tasks")
-                Text(text = "Time spent")
-            }
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(140.dp)
-            ) {
-                Text(
-                    text = "Task 0",
-                    textAlign = TextAlign.Left
-                )
-
-                Text(
-                    text = "3h",
-                    textAlign = TextAlign.Right
-                )
-            }
-        }
+//        Column() {
+//            Row(
+//                horizontalArrangement = Arrangement.spacedBy(40.dp)
+//            ) {
+//                Text(text = "Finished Tasks")
+//                Text(text = "Time spent")
+//            }
+//            Row(
+//                horizontalArrangement = Arrangement.spacedBy(140.dp)
+//            ) {
+//                Text(
+//                    text = "Task 0",
+//                    textAlign = TextAlign.Left
+//                )
+//
+//                Text(
+//                    text = "3h",
+//                    textAlign = TextAlign.Right
+//                )
+//            }
+//        }
 
         //testing only
-        Column() {
-            runBlocking{
-                launch{
-                    ApolloBodyTest()
-                }
-            }
-        }
+//        Column() {
+//            runBlocking{
+//                launch{
+//                    ApolloBodyTest()
+//                }
+//            }
+//        }
         Button(
             onClick = {
-                viewModel.deleteSingleTaskTest()
+                viewModel.findSingleDayTask(1)
+                testtask?.forEach{ item ->
+                    Log.d("ABCD", "${item.taskName}")
+                }
             }
         ) {
             Text(text = "delete test")

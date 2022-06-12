@@ -138,8 +138,19 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.FinishPopup.route) {
             FinishPopup(navController = navController)
         }
-        composable(route = NavScreen.CountingTime.route) {
-            CountingTime(navController = navController)
+        composable(
+            route = NavScreen.CountingTime.route + "/{pickedId}",
+            arguments = listOf(
+                navArgument(name = "pickedId"){ NavType.StringType }
+            )
+        ) {
+            backStackEntry ->
+            val pickedId = backStackEntry.arguments?.getString("pickedId")
+            CountingTime(
+                navController = navController,
+                viewModel = viewModel,
+                pickedId = pickedId
+            )
         }
         composable(route = NavScreen.Calendar.route) {
             Calendar(navController = navController)
@@ -164,13 +175,33 @@ fun WorkorDieApp(viewModel: TaskViewModel){
         composable(route = NavScreen.Profile.route) {
             Profile(navController = navController)
         }
-        composable(route = NavScreen.CountdownTime.route) {
-            CountdownTimer(navController = navController)
+        composable(
+            route = NavScreen.CountdownTime.route + "/{pickedId}",
+            arguments = listOf(
+                navArgument(name = "pickedId"){ NavType.StringType }
+            )
+        ) {
+            backStackEntry ->
+            val pickedId = backStackEntry.arguments?.getString("pickedId")
+            CountdownTimer(
+                navController = navController,
+                taskViewModel = viewModel,
+                pickedId = pickedId
+            )
         }
-        composable(route = NavScreen.AccumulateTime.route){
+        composable(
+            route = NavScreen.AccumulateTime.route + "/{pickedId}",
+            arguments = listOf(
+                navArgument(name = "pickedId"){ NavType.StringType }
+            )
+        ){
+            backStackEntry ->
+            val pickedId = backStackEntry.arguments?.getString("pickedId")
             AccumulateTimer(
                 viewModel = CountTimeviewModel,
-                navController = navController
+                navController = navController,
+                pickedId = pickedId,
+                taskViewModel = viewModel
             )
         }
         composable(route = NavScreen.SubtaskDetail.route) {

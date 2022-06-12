@@ -173,7 +173,7 @@ fun AddTask(
                         taskName = taskNameState,
                         startDate = taskStartDateState,
                         endDate = taskDeadlineState,
-                        totalTimeSpent = 0.0f,
+                        totalTimeSpent = 0L,
                         index = taskIndexState.toInt()
                     )
                     viewModel.insert(task)

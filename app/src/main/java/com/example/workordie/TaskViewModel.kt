@@ -12,7 +12,7 @@ import java.util.*
 class TaskViewModel(application: Application) : ViewModel() {
     val allProducts: LiveData<List<Task>>
     private val repository: TaskRepository
-    val searchResults: MutableLiveData<List<Task>>
+    var searchResults: MutableLiveData<List<Task>>
 
     init {
         val taskDb = TaskRoomDatabase.getDatabase(application)
@@ -31,8 +31,13 @@ class TaskViewModel(application: Application) : ViewModel() {
         repository.deleteSingleTaskTest()
     }
 
+    fun updateTaskTimeSpent(timeSpent: Long, inputId: Int){
+        repository.updateTaskTimeSpent(timeSpent, inputId)
+    }
+
     fun findSingleDayTask(id: Int) {
         repository.findSingleDayTasks(id)
+        searchResults = repository.searchResults
     }
 
     fun deleteTask(task: Task) {

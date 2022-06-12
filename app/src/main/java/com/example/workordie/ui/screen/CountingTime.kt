@@ -1,34 +1,43 @@
 package com.example.workordie.ui.screen
 
+
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-//import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.workordie.TaskViewModel
+import com.example.workordie.model.Task
 import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
 import com.example.workordie.ui.accumulateTime.AccumulateTimeViewModel
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import kotlinx.coroutines.CoroutineScope
-//import kotlin.time.ExperimentalTime
+
 
 @Composable
-fun CountingTime(modifier: Modifier = Modifier, navController : NavController){
+fun CountingTime(
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: TaskViewModel,
+    pickedId: String?
+){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     Scaffold(
         scaffoldState = scaffoldState,
-
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {navController.navigate(NavScreen.Home.route)}
+                onClick = { navController.navigate(NavScreen.Home.route) }
             ){
                 Icon(
                     imageVector = Icons.Default.Home,
@@ -36,25 +45,45 @@ fun CountingTime(modifier: Modifier = Modifier, navController : NavController){
                 )
             }
         },
-
         content = {
-            CountingTimeBody(modifier, navController = navController)
-        },
-
+            CountingTimeBody(
+                modifier = modifier,
+                navController = navController,
+                viewModel = viewModel,
+                pickedId = pickedId
+            )
+        }
     )
 }
 @Composable
-fun CountingTimeBody(modifier : Modifier = Modifier, navController : NavController){
+fun CountingTimeBody(
+    modifier : Modifier = Modifier,
+    navController : NavController,
+    viewModel: TaskViewModel,
+    pickedId: String?
+){
     //var mode = remember { mutableStateOf(0) }
-    Column(Modifier.padding(20.dp))
-    {
+    val pickedIdReal = pickedId!!.toInt()
+    val taskTodo by viewModel.searchResults.observeAsState()
+    viewModel.findSingleDayTask(pickedIdReal)
+    Log.d("ABCD", "pickidReal = $pickedIdReal")
+    var task: Task? = null
+    try {
+        task = taskTodo?.get(0)
+        Log.d("ABCD", "taskName = ${task?.taskName}")
+    } catch (e: IndexOutOfBoundsException) {
+        task?.taskName = "Loading..."
+    }
+
+
+    Column(Modifier.padding(20.dp)) {
         Text(
-            text = "Softwre Studio",
+            text = "${task?.taskName}",
             textAlign = TextAlign.End,
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentWidth(Alignment.CenterHorizontally)
-                .padding(vertical = 30.dp),
+                .padding(vertical = 30.dp)
         )
         
         //val viewModel: MainViewModel = viewModel()
@@ -62,7 +91,7 @@ fun CountingTimeBody(modifier : Modifier = Modifier, navController : NavControll
         Row {
             Spacer(modifier = Modifier.width(30.dp))
             Button(
-                onClick = { navController.navigate(NavScreen.CountdownTime.route) },
+                onClick = { navController.navigate(NavScreen.CountdownTime.route + "/${task?.id}") },
                 modifier = Modifier
                     .width(150.dp)
                     .padding(16.dp)
@@ -70,7 +99,9 @@ fun CountingTimeBody(modifier : Modifier = Modifier, navController : NavControll
                 Text(text = "Countdown")
             }
             Button(
-                onClick = { navController.navigate(NavScreen.AccumulateTime.route) },
+                onClick = {
+                    navController.navigate(NavScreen.AccumulateTime.route + "/${task?.id}")
+                  },
                 modifier = Modifier
                     .width(150.dp)
                     .padding(16.dp)
@@ -95,22 +126,19 @@ fun CountingTimeBody(modifier : Modifier = Modifier, navController : NavControll
         Text(
             text = "Subtask2",
             textAlign = TextAlign.Right,
-            modifier = modifier.padding(vertical = 10.dp),
+            modifier = modifier.padding(vertical = 10.dp)
         )
         Text(
             text = "Subtask3",
             textAlign = TextAlign.Right,
-            modifier = modifier.padding(vertical = 10.dp),
+            modifier = modifier.padding(vertical = 10.dp)
         )
         Text(
             text = "Subtask4",
             textAlign = TextAlign.Right,
-            modifier = modifier.padding(vertical = 10.dp),
-
-            )
-
+            modifier = modifier.padding(vertical = 10.dp)
+        )
     }
-
 }
 
 @Composable
@@ -138,10 +166,10 @@ private fun StopButton(viewModel: CountDownTimeViewModel) {
         Text(text = "Stop")
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun CountingTimePreview() {
-    WorkOrDieTheme {
-        CountingTime(navController = rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CountingTimePreview() {
+//    WorkOrDieTheme {
+//        CountingTime(navController = rememberNavController())
+//    }
+//}

@@ -7,7 +7,9 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
@@ -33,6 +35,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 
 import com.example.workordie.R
+import com.example.workordie.TaskViewModel
 import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
 import com.example.workordie.ui.CountDownTime.utils.TimeFormatUtils
 import com.example.workordie.ui.screen.NavScreen
@@ -44,33 +47,35 @@ import kotlin.math.sin
 
 // Start building your app here!
 @Composable
-fun CountdownTimer(navController : NavController) {
+fun CountdownTimer(
+    navController : NavController,
+    taskViewModel: TaskViewModel,
+    pickedId: String?
+) {
     val viewModel: CountDownTimeViewModel = viewModel()
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
-
-
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
-
                 title = {
                     Text(
                         text = stringResource(id = R.string.app_name)
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = {navController.navigate(NavScreen.CountingTime.route)}) {
+                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${pickedId}") }) {
                         Icon(Icons.Filled.ArrowBack, "backIcon")
-
                     }
                 }
             )
-        },
+        }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Countdown", fontSize = 30.sp)
@@ -82,6 +87,8 @@ fun CountdownTimer(navController : NavController) {
                 StartButton(viewModel)
                 StopButton(viewModel)
             }
+
+            // checkbox
             for(i in 1..4){
                 val isChecked = remember { mutableStateOf(false) }
                 Row(
@@ -112,13 +119,16 @@ fun CountdownTimer(navController : NavController) {
                 }
             }
             Button(
-                onClick = { navController.navigate(NavScreen.FinishPopup.route) },
+                onClick = {
+                    taskViewModel.updateTaskTimeSpent(viewModel.totalTimeSpent, pickedId!!.toInt())
+                    navController.navigate(NavScreen.FinishPopup.route)
+                          },
                 modifier = Modifier
                     .width(150.dp)
-                    .padding(16.dp))
-                {
-                    Text(text = "finish")
-                }
+                    .padding(16.dp)
+            ) {
+                Text(text = "finish")
+            }
         }
     }
 }
@@ -162,7 +172,8 @@ private fun StartButton(viewModel: CountDownTimeViewModel) {
         onClick = viewModel.status::clickStartButton,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFFFBE8A6),
-            contentColor = Color.Black)
+            contentColor = Color.Black
+        )
     ) {
         Text(text = viewModel.status.startButtonDisplayString())
     }
@@ -178,14 +189,15 @@ private fun StopButton(viewModel: CountDownTimeViewModel) {
         onClick = viewModel.status::clickStopButton,
         colors = ButtonDefaults.buttonColors(
             backgroundColor = Color(0xFFFBE8A6),
-            contentColor = Color.Black)
+            contentColor = Color.Black
+        )
     ) {
         Text(text = "Stop")
     }
 }
 
 @Composable
-fun ProgressCircle(viewModel:CountDownTimeViewModel) {
+fun ProgressCircle(viewModel: CountDownTimeViewModel) {
     // Circle diameter
     val size = 160.dp
     Box(contentAlignment = Alignment.Center) {
@@ -252,10 +264,10 @@ private fun CompletedText(viewModel:CountDownTimeViewModel) {
         color = MaterialTheme.colors.primary
     )
 }
-@Preview(showBackground = true)
-@Composable
-fun CountdownTimePreview() {
-    WorkOrDieTheme {
-        CountdownTimer(rememberNavController())
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CountdownTimePreview() {
+//    WorkOrDieTheme {
+//        CountdownTimer(rememberNavController())
+//    }
+//}

@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.runtime.*
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,38 +24,30 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.R
+import com.example.workordie.TaskViewModel
 import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
 import com.example.workordie.ui.screen.NavScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
-class MainActivity : ComponentActivity() {
-
-    private val viewModel: AccumulateTimeViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            //MainApp(viewModel, navController = )
-
-
-        }
-    }
-}
-
 @OptIn(ExperimentalTime::class)
 @Composable
-fun AccumulateTimer(viewModel: AccumulateTimeViewModel, navController: NavController) {
+fun AccumulateTimer(
+    viewModel: AccumulateTimeViewModel,
+    navController: NavController,
+    pickedId: String?,
+    taskViewModel: TaskViewModel
+) {
     AccumulateTimerContent(
-        navController,
+        navController = navController,
         isPlaying = viewModel.isPlaying,
         seconds = viewModel.seconds,
         minutes = viewModel.minutes,
         hours = viewModel.hours,
         onStart = { viewModel.start() },
         onPause = { viewModel.pause() },
-        onStop = { viewModel.stop() }
+        onStop = { viewModel.stop() },
+        pickedId = pickedId
     )
 }
 
@@ -71,26 +62,21 @@ private fun AccumulateTimerContent(
     onStart: () -> Unit = {},
     onPause: () -> Unit = {},
     onStop: () -> Unit = {},
+    pickedId: String?
 ) {
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
 
     Scaffold(scaffoldState = scaffoldState) {
-
-
         TopAppBar(
             title = {
-                    Text(
-                        text = stringResource(id = R.string.app_name)
-                    )
-                },
-            navigationIcon = {
-                IconButton(onClick = {navController.navigate(NavScreen.CountingTime.route)}) {
-                    Icon(Icons.Filled.ArrowBack, "backIcon")
-
-                }
+                Text(text = stringResource(id = R.string.app_name))
             },
-
-            )
+            navigationIcon = {
+                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/{pickedId}") }) {
+                    Icon(Icons.Filled.ArrowBack, "backIcon")
+                }
+            }
+        )
 
         Column(
             Modifier.fillMaxSize(),
@@ -126,7 +112,6 @@ private fun AccumulateTimerContent(
             //Spacer(modifier = Modifier.height(50.dp))
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-
             ) {
                 AnimatedContent(targetState = isPlaying) {
                     if (it)
@@ -134,7 +119,8 @@ private fun AccumulateTimerContent(
                             onClick = onPause,
                             modifier = Modifier
                                 .width(150.dp)
-                                .padding(16.dp),) {
+                                .padding(16.dp)
+                        ) {
                             Text(text = "pause")
                         }
                     else
@@ -142,8 +128,8 @@ private fun AccumulateTimerContent(
                             onClick = onStart,
                             modifier = Modifier
                                 .width(150.dp)
-                                .padding(16.dp),
-                            ) {
+                                .padding(16.dp)
+                        ) {
                             Text(text = "start")
                         }
                 }
@@ -153,22 +139,21 @@ private fun AccumulateTimerContent(
                     onClick = onStop,
                     modifier = Modifier
                         .width(150.dp)
-                        .padding(16.dp),
-
-
+                        .padding(16.dp)
                 ) {
                     Text(text = "stop")
                 }
-
             }
             for(i in 1..4){
                 val isChecked = remember { mutableStateOf(false) }
                 Row(
                     modifier = Modifier
-                        .clickable(onClick = {
-                            isChecked.value = !isChecked.value // 點擊文字時也能變更勾選狀態
-                        })
-                        .padding(8.dp),
+                        .clickable(
+                            onClick = {
+                                isChecked.value = !isChecked.value // 點擊文字時也能變更勾選狀態
+                            }
+                        )
+                        .padding(8.dp)
                 ) {
                     Checkbox(
                         checked = isChecked.value, // 是否勾選
@@ -196,29 +181,26 @@ private fun AccumulateTimerContent(
                 onClick = { navController.navigate(NavScreen.FinishPopup.route) },
                 modifier = Modifier
                     .width(150.dp)
-                    .padding(16.dp),
-
-
+                    .padding(16.dp)
             ) {
                 Text(text = "finish")
             }
-
         }
     }
 }
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-
-        AccumulateTimerContent(
-            navController = rememberNavController(),
-            false,
-            "00",
-            "00",
-            "00"
-        )
-
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DefaultPreview() {
+//
+//        AccumulateTimerContent(
+//            navController = rememberNavController(),
+//            false,
+//            "00",
+//            "00",
+//            "00"
+//        )
+//
+//}

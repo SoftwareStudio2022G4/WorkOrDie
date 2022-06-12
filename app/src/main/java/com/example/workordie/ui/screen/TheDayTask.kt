@@ -121,7 +121,7 @@ fun DailyTaskContent(
                             contentDescription = "Menu"
                         )
                     }
-                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${task.id}") }) {
                         Icon(
                             Icons.Default.PlayArrow,
                             contentDescription = "PlayButton"
