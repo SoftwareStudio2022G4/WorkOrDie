@@ -19,6 +19,9 @@ import androidx.navigation.NavController
 import androidx.compose.ui.text.input.KeyboardType
 import com.example.workordie.TaskViewModel
 import com.example.workordie.model.Task
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 /* TODO
@@ -110,10 +113,16 @@ fun AddTask(
                 placeholder = { Text(text = "ex. HW") }
             )
             OutlinedTextField(
+                value = taskStartDateState,
+                onValueChange = { taskStartDateState = it },
+                label = { Text(text = "Estimated Start Date") },
+                placeholder = { Text(text = "ex. 2022/05/20") }
+            )
+            OutlinedTextField(
                 value = taskDeadlineState,
                 onValueChange = { taskDeadlineState = it },
                 label = { Text(text = "Deadline") },
-                placeholder = { Text(text = "ex. 5/30") }
+                placeholder = { Text(text = "ex. 2022/05/30") }
             )
             OutlinedTextField(
                 value = taskTimeState,
@@ -123,18 +132,33 @@ fun AddTask(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             OutlinedTextField(
-                value = taskStartDateState,
-                onValueChange = { taskStartDateState = it },
-                label = { Text(text = "Estimated Start Date") },
-                placeholder = { Text(text = "ex. 5/20") }
-            )
-            OutlinedTextField(
                 value = "+",
                 onValueChange = { },
                 label = { Text(text = "Add subtasks") }
             )
             Button(
                 onClick = {
+                    val fm = SimpleDateFormat("yyyy/mm/dd")
+                    // try to format start date
+                    try {
+                        val dt: Date = fm.parse(taskStartDateState)
+                    } catch (e: ParseException) { // format fail
+                        val StartTimeList = taskStartDateState.split("/")
+                        val StartYear = (Date().year + 1900).toString()
+                        if(StartTimeList.size <= 2) {   //doesn't have year
+                            taskStartDateState = StartYear + "/" + taskStartDateState
+                        }
+                    }
+                    // try to format end date
+                    try {
+                        val dt: Date = fm.parse(taskDeadlineState)
+                    } catch (e: ParseException) { // format fail
+                        val EndTimeList = taskDeadlineState.split("/")
+                        val EndYear = (Date().year + 1900).toString()
+                        if(EndTimeList.size <= 2) {   //doesn't have year
+                            taskDeadlineState = EndYear + "/" + taskDeadlineState
+                        }
+                    }
                     val task = Task(
                         taskType = taskTypeState,
                         taskName = taskNameState,
