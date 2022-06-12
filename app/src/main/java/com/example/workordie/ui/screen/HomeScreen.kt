@@ -251,6 +251,7 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
         ) {
             Text(text = "delete test")
         }
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }
 

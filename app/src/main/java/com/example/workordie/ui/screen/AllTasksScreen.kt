@@ -20,11 +20,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.workordie.TaskViewModel
 import com.example.workordie.model.Task
 import androidx.navigation.compose.rememberNavController
@@ -34,10 +36,13 @@ import com.example.workordie.ui.theme.WorkOrDieTheme
 @Composable
 fun AllTasks(
     navController: NavController,
-    viewModel: TaskViewModel
+    viewModel: TaskViewModel,
+
 ){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
+
     Scaffold (
+
         scaffoldState = scaffoldState,
         floatingActionButton = {
             FloatingActionButton(
@@ -53,6 +58,7 @@ fun AllTasks(
             AlltasksBodyContent(navController, viewModel)
         },
         bottomBar = {
+
             AllTasksBottomBar(navController)
         }
     )
@@ -150,6 +156,7 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) 
 //            }
 //        }
     }
+
 }
 
 @Composable
