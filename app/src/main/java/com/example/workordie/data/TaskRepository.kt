@@ -10,13 +10,19 @@ class TaskRepository(private val taskDao: TaskDAO) {
     val taskResults = MutableLiveData<List<Task>>()
 
     val allTasks: LiveData<List<Task>> = taskDao.getAllTasks()
-    val searchResults = MutableLiveData<List<Task>>()
+    var searchResults = MutableLiveData<List<Task>>()
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     fun insertTask(task: Task){
         coroutineScope.launch(Dispatchers.IO) {
             taskDao.insert(task)
+        }
+    }
+
+    fun updateTaskTimeSpent(timeSpent: Long, inputId: Int){
+        coroutineScope.launch(Dispatchers.IO) {
+            taskDao.updateTimeSpent(timeSpent, inputId)
         }
     }
 
@@ -34,11 +40,13 @@ class TaskRepository(private val taskDao: TaskDAO) {
 
     fun findSingleDayTasks(id: Int) {
         coroutineScope.launch(Dispatchers.Main) {
-            taskResults.value = asyncFindSingleDay(id).await()
+            searchResults.value = asyncFindSingleDayTasks(id).await()
         }
     }
 
-    private fun asyncFindSingleDay(id: Int): Deferred<List<Task>?> =
+
+
+    private fun asyncFindSingleDayTasks(id: Int): Deferred<List<Task>?> =
         coroutineScope.async(Dispatchers.IO) {
             return@async taskDao.getSingleDayTasks(id)
         }

@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.workordie.model.SubTask
 import com.example.workordie.model.Task
 
-@Database(entities = [Task::class, SubTask::class], version = 3, exportSchema = false)
+@Database(entities = [Task::class, SubTask::class], version = 4, exportSchema = false)
 abstract class TaskRoomDatabase : RoomDatabase() {
     abstract fun taskDAO(): TaskDAO
 

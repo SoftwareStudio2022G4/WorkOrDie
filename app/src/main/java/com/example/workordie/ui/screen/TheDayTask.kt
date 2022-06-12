@@ -114,14 +114,14 @@ fun DailyTaskContent(
             ){
                 if(CompareDateCalender(task, dateString)) {
                     Text(text = "${task.taskName}")
-                    Text(text = "${task.totalTimeSpent} h")
+                    Text(text = "${task.totalTimeSpent} sec")
                     IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route)}) {
                         Icon(
                             Icons.Default.Menu,
                             contentDescription = "Menu"
                         )
                     }
-                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
+                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${task.id}") }) {
                         Icon(
                             Icons.Default.PlayArrow,
                             contentDescription = "PlayButton"

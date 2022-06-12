@@ -30,7 +30,7 @@ data class Task(
     var endDate: String,
 
     @ColumnInfo(name = "total_time_spent")
-    var totalTimeSpent: Float,
+    var totalTimeSpent: Long,
 
     @ColumnInfo(name = "index")
     var index: Int

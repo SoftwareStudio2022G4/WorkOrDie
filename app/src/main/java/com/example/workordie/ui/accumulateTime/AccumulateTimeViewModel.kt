@@ -1,5 +1,6 @@
 package com.example.workordie.ui.accumulateTime
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
 import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -19,6 +21,8 @@ class AccumulateTimeViewModel : ViewModel() {
     var minutes by mutableStateOf("00")
     var hours by mutableStateOf("00")
     var isPlaying by mutableStateOf(false)
+
+    var timeSpent by mutableStateOf(0L)
 
     fun start() {
         timer = fixedRateTimer(initialDelay = 1000L, period = 1000L) {
@@ -47,6 +51,8 @@ class AccumulateTimeViewModel : ViewModel() {
 
     fun stop() {
         pause()
+        timeSpent += time.toLong(DurationUnit.SECONDS)
+        Log.d("ABCD", "timeSpent = $timeSpent")
         time = Duration.ZERO
         updateTimeStates()
     }
