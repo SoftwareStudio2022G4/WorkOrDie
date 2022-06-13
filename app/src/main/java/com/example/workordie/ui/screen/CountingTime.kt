@@ -66,11 +66,11 @@ fun CountingTimeBody(
     val pickedIdReal = pickedId!!.toInt()
     val taskTodo by viewModel.searchResults.observeAsState()
     viewModel.findSingleDayTask(pickedIdReal)
-    Log.d("ABCD", "pickidReal = $pickedIdReal")
+//    Log.d("ABCD", "pickidReal = $pickedIdReal")
     var task: Task? = null
     try {
         task = taskTodo?.get(0)
-        Log.d("ABCD", "taskName = ${task?.taskName}")
+//        Log.d("ABCD", "taskName = ${task?.taskName}")
     } catch (e: IndexOutOfBoundsException) {
         task?.taskName = "Loading..."
     }

@@ -1,5 +1,6 @@
 package com.example.workordie.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,37 @@ import com.example.workordie.model.Task
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.CountDownTime.CountdownTimer
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+
+private fun CompareDateAllTasks(task: Task): Boolean {
+    //today
+    val date = Date()
+    val dateformat = SimpleDateFormat("yyyy/MM/dd")
+    val dateString = dateformat.format(date)
+
+
+    try {
+        val startDate: Date = dateformat.parse(task.startDate)
+        val endDate: Date = dateformat.parse(task.endDate)
+
+        //tomorrow
+        val c: Calendar = Calendar.getInstance()
+        c.setTime(endDate)
+        c.add(Calendar.DATE, 1)
+        val theDayAfterEndDate = c.getTime()
+
+        Log.d("ABCD", "startDate = ${task.startDate}")
+        Log.d("ABCD", "endDate = ${task.endDate}")
+        Log.d("ABCD", "today = ${dateString}")
+        Log.d("ABCD", "theDayAfterEndDate = ${theDayAfterEndDate}")
+        return date == startDate || (date.after(startDate) && date.before(theDayAfterEndDate)) //compare endDate with date+1
+    } catch (e: ParseException) {
+        return false
+    }
+    return false
+}
 
 @Composable
 fun AllTasks(
@@ -84,27 +116,28 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) 
             fontSize = 30.sp,
             textAlign = TextAlign.Right
         )
-        tasksList?.forEach { item ->
+        tasksList?.forEach { task ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = "${item.taskName}")
-                Text(text = "${item.taskType}")
-                IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-                    Icon(
-                        Icons.Default.Menu,
-                        contentDescription = "Menu"
-                    )
-                }
-                IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${item.id}") }) {
-                    Icon(
-                        Icons.Default.PlayArrow,
-                        contentDescription = "PlayButton"
-                    )
+            ) { if(CompareDateAllTasks(task)) {
+                        Text(text = "${task.taskName}")
+                        Text(text = "${task.taskType}")
+                        IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+                            Icon(
+                                Icons.Default.Menu,
+                                contentDescription = "Menu"
+                            )
+                        }
+                        IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${task.id}") }) {
+                            Icon(
+                                Icons.Default.PlayArrow,
+                                contentDescription = "PlayButton"
+                            )
+                        }
+                    }
                 }
             }
-        }
 
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -132,31 +165,33 @@ fun AlltasksBodyContent(navController: NavController, viewModel: TaskViewModel) 
 //            }
 //        }
 //
-//        Text(
-//            text = "Not Started:",
-//            fontSize = 30.sp,
-//            textAlign = TextAlign.Right
-//        )
-//        Row(
-//            horizontalArrangement = Arrangement.spacedBy(20.dp),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text(text = "Summer Vacation")
-//            IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
-//                Icon(
-//                    Icons.Default.Menu,
-//                    contentDescription = "Menu"
-//                )
-//            }
-//            IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route) }) {
-//                Icon(
-//                    Icons.Default.PlayArrow,
-//                    contentDescription = "PlayButton"
-//                )
-//            }
-//        }
+        Text(
+            text = "Not Started:",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Right
+        )
+        tasksList?.forEach { task ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){ if(!CompareDateAllTasks(task)) {
+                    Text(text = "${task.taskName}")
+                    IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route) }) {
+                        Icon(
+                            Icons.Default.Menu,
+                            contentDescription = "Menu"
+                        )
+                    }
+                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${task.id}") }) {
+                        Icon(
+                            Icons.Default.PlayArrow,
+                            contentDescription = "PlayButton"
+                        )
+                    }
+                }
+            }
+        }
     }
-
 }
 
 @Composable

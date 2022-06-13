@@ -241,16 +241,16 @@ fun BodyContent(navController : NavController, viewModel: TaskViewModel){
 //                }
 //            }
 //        }
-        Button(
-            onClick = {
-                viewModel.findSingleDayTask(1)
-                testtask?.forEach{ item ->
-                    Log.d("ABCD", "${item.taskName}")
-                }
-            }
-        ) {
-            Text(text = "delete test")
-        }
+//        Button(
+//            onClick = {
+//                viewModel.findSingleDayTask(1)
+//                testtask?.forEach{ item ->
+//                    Log.d("ABCD", "${item.taskName}")
+//                }
+//            }
+//        ) {
+//            Text(text = "delete test")
+//        }
         Spacer(modifier = Modifier.height(100.dp))
     }
 }
