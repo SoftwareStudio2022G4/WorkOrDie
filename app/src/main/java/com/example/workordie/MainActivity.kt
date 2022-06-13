@@ -219,7 +219,7 @@ fun WorkorDieApp(viewModel: TaskViewModel){
             SubtaskDetail(navController = navController)
         }
         composable(route = NavScreen.GoogleSignIn.route) {
-            SignInScreen(signInViewModel = signInViewModel)
+            SignInScreen(signInViewModel = signInViewModel, navController = navController)
         }
     }
 }

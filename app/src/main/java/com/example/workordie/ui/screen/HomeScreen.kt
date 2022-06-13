@@ -106,7 +106,7 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope, navControl
 
                 //profile
                 IconButton(
-                    onClick = {navController.navigate(NavScreen.Profile.route) }
+                    onClick = {navController.navigate(NavScreen.GoogleSignIn.route) }
                 ) {
                     Icon(
                         Icons.Default.Person,
