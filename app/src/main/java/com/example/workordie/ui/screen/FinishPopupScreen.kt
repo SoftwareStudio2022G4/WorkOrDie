@@ -120,18 +120,18 @@ fun FinishPopupBody(
         //will handle onclick event after finish designing the counting time screen
         Button(
             onClick = {
-                val classtype = determineClassType(task.taskType)
-                runBlocking{
-                        launch{
-                            if (apolloClient.query(GetHomeworkQuery(index = task.index, type = classtype)).execute() == null ) {
-                                apolloClient.mutation(CreateHomeworkMutation(index = task.index, type = classtype)).execute()
-                            }
-                            apolloClient.mutation(AddToHomeworkMutation(
-                                index = task.index,
-                                type = classtype
-                            )).execute()
-                        }
-                }
+//                val classtype = determineClassType(task.taskType)
+//                runBlocking{
+//                        launch{
+//                            if (apolloClient.query(GetHomeworkQuery(index = task.index, type = classtype)).execute() == null ) {
+//                                apolloClient.mutation(CreateHomeworkMutation(index = task.index, type = classtype)).execute()
+//                            }
+//                            apolloClient.mutation(AddToHomeworkMutation(
+//                                index = task.index,
+//                                type = classtype
+//                            )).execute()
+//                        }
+//                }
                 viewModel.deleteSingleTaskTest(pickedId!!.toInt())
                 navController.navigate(NavScreen.Home.route)
             }
