@@ -37,7 +37,7 @@ fun SubtaskDetail(navController : NavController){
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            SubtaskTopBar(scaffoldState = scaffoldState)
+            SubtaskTopBar(scaffoldState = scaffoldState, navController)
         },
         content = {
             SubtaskContent(navController)
@@ -46,7 +46,7 @@ fun SubtaskDetail(navController : NavController){
 }
 
 @Composable
-fun SubtaskTopBar(scaffoldState: ScaffoldState){
+fun SubtaskTopBar(scaffoldState: ScaffoldState, navController: NavController){
     scaffoldState.drawerState
 
     TopAppBar(
@@ -58,7 +58,7 @@ fun SubtaskTopBar(scaffoldState: ScaffoldState){
                 horizontalArrangement = Arrangement.End
             ){
                 IconButton(
-                    onClick = {/*navController.navigate(NavScreen.CountingTime.route)*/ }
+                    onClick = {navController.navigate(NavScreen.Home.route) }
                 ) {
                     Icon(
                         Icons.Filled.ArrowBackIos,
@@ -72,6 +72,7 @@ fun SubtaskTopBar(scaffoldState: ScaffoldState){
 
 @Composable
 fun SubtaskContent(navController : NavController){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +82,8 @@ fun SubtaskContent(navController : NavController){
         Text(
             text = "Task 1",
             fontWeight = FontWeight.ExtraBold,
-            color = MaterialTheme.colors.onSurface,
+            //don't set the color!! it is set already
+            //or the word may disappear
             fontSize = 35.sp
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -89,7 +91,7 @@ fun SubtaskContent(navController : NavController){
         Spacer(modifier = Modifier.height(48.dp))
         val backgroundShape = RoundedCornerShape(6.dp)
         Button(
-            onClick = {/*TODO*/},
+            onClick = {},
             /*modifier = Modifier.width(220.dp).height(60.dp)*/
             contentPadding = PaddingValues(
                 start = 30.dp,
@@ -119,16 +121,16 @@ fun SubtaskContent(navController : NavController){
                 contentDescription = "completion icon"
             )
             Text(text = "Completion: ",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             /*TODO (5): update completion from DB*/
             Text(text = "40",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             Text(text = "%",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
@@ -144,12 +146,12 @@ fun SubtaskContent(navController : NavController){
             Spacer(Modifier.width(10.0.dp))
             Text(text = "Deadline: ",
                 textAlign = TextAlign.Start,
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             /*TODO (5): update completion from DB*/
             Text(text = "<date>",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
@@ -164,12 +166,12 @@ fun SubtaskContent(navController : NavController){
             )
             Spacer(Modifier.width(10.0.dp))
             Text(text = "Hours/day: ",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
             /*TODO: update completion from DB*/
             Text(text = "<Hrs>",
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp
             )
         }
@@ -178,7 +180,7 @@ fun SubtaskContent(navController : NavController){
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { navController.navigate(NavScreen.AllTasks.route) },
                 modifier = Modifier
                     .width(150.dp)
                     .height(48.dp)
@@ -195,7 +197,7 @@ fun SubtaskContent(navController : NavController){
                 )
             }
             Spacer(modifier = Modifier.width(20.dp))
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = { navController.navigate(NavScreen.CountingTime.route) },
                 modifier = Modifier
                     .width(150.dp)
                     .height(48.dp)
@@ -237,7 +239,7 @@ private fun CheckSubtask(name: String) {
             SubtaskCheckbox()
             Text(text = "Subtask",
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onPrimary,
+                //color = MaterialTheme.colors.onPrimary,
                 fontSize = 24.sp,
                 /*TODO: should fix the check box start location & reorder button,
                 *  rather than setting the padding of the end of subtask*/

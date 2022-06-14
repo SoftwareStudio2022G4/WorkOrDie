@@ -1,5 +1,6 @@
 package com.example.workordie.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -7,10 +8,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -19,14 +18,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.workordie.ui.theme.Blue900
+import com.example.graphql.apolloClient
+import com.example.rocketreserver.*
+import com.example.rocketreserver.type.CLASSTYPE
+import com.example.workordie.TaskViewModel
+import com.example.workordie.model.Task
 import com.example.workordie.ui.theme.WorkOrDieTheme
 import com.example.workordie.ui.theme.Yellow100
 import com.example.workordie.ui.theme.Yellow50
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,13 +52,13 @@ body content
 * */
 
 @Composable
-fun Home(navController : NavController){
+fun Home(navController : NavController, viewModel: TaskViewModel){
     val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
     val scope : CoroutineScope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            HomeTopBar(scaffoldState = scaffoldState, scope = scope)
+            HomeTopBar(scaffoldState = scaffoldState, scope = scope, navController)
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -66,16 +74,16 @@ fun Home(navController : NavController){
             DrawerContent()
         },
         content = {
-            BodyContent(navController)
+            BodyContent(navController, viewModel)
         },
         bottomBar = {
-            HomeBottomBar()
+            HomeBottomBar(navController)
         }
     )
 }
 
 @Composable
-fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
+fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope, navController : NavController){
     val drawerState = scaffoldState.drawerState
 
     TopAppBar(
@@ -89,13 +97,7 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
                 //menu
                 IconButton(
                     onClick = {
-                        scope.launch {
-                            if(drawerState.isClosed){
-                                drawerState.open()
-                            }else{
-                                drawerState.close()
-                            }
-                        }
+                        navController.navigate(NavScreen.Settings.route)
                     }
                 ) {
                     Icon(
@@ -105,7 +107,7 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
                 }
                 //profile
                 IconButton(
-                    onClick = { }
+                    onClick = {navController.navigate(NavScreen.GoogleSignIn.route) }
                 ) {
                     Icon(
                         Icons.Default.Person,
@@ -117,13 +119,50 @@ fun HomeTopBar(scaffoldState : ScaffoldState, scope : CoroutineScope){
     )
 }
 
+suspend fun ApolloBodyTest() {
+    val input = CLASSTYPE.Probability
+    apolloClient.mutation(DeleteHomeworkMutation(type = input, index = 1)).execute()
+    apolloClient.mutation(DeleteHomeworkMutation(type = input, index = 0)).execute()
+    val response = apolloClient.query(ClassDetailQuery(type = input)).execute()
+    Log.d("LaunchList", "Success ${response.data}")
+}
+
+fun CompareDate(task: Task): Boolean {
+    //today
+    val date = Date()
+    val dateformat = SimpleDateFormat("yyyy/MM/dd")
+    val dateString = dateformat.format(date)
+
+    try {
+        val startDate: Date = dateformat.parse(task.startDate)
+        val endDate: Date = dateformat.parse(task.endDate)
+
+        //tomorrow
+        val c: Calendar = Calendar.getInstance()
+        c.setTime(endDate)
+        c.add(Calendar.DATE, 1)
+        val theDayAfterEndDate = c.getTime()
+
+        Log.d("ABCD", "startDate = ${task.startDate}")
+        Log.d("ABCD", "endDate = ${task.endDate}")
+        Log.d("ABCD", "today = ${dateString}")
+        Log.d("ABCD", "theDayAfterEndDate = ${theDayAfterEndDate}")
+        return date == startDate || (date.after(startDate) && date.before(theDayAfterEndDate)) //compare endDate with date+1
+    } catch (e: ParseException) {
+        return false
+    }
+    return false
+}
+
 @Composable
-fun BodyContent(navController : NavController){
+fun BodyContent(navController : NavController, viewModel: TaskViewModel){
     val date = Date()
     val formatterMonth = SimpleDateFormat("MMM")
     val formatterDay = SimpleDateFormat("dd")
     val monthString: String = formatterMonth.format(date)
     val dayString: String = formatterDay.format(date)
+    val allTaskList by viewModel.allProducts.observeAsState()
+    val testtask by viewModel.searchResults.observeAsState()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -213,31 +252,35 @@ private fun TaskContent() {
                 horizontalArrangement = Arrangement.spacedBy(30.dp),
                 verticalAlignment = Alignment.CenterVertically
             ){
-                Text(text = "Task $i",
-                    fontSize = 18.sp,
-                    color = Blue900)
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(text = "$i h",
-                    fontSize = 18.sp,
-                    color = Blue900)
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Default.Menu,
-                        contentDescription = "Menu",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
-                    )
-                }
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        Icons.Default.PlayArrow,
-                        contentDescription = "PlayButton",
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
-                    )
-                }
-            }
+                if(CompareDate(task)) {
+                  Text(text = "${task.taskName}",
+                      fontSize = 18.sp,
+                      color = Blue900)
+                  Spacer(modifier = Modifier.width(6.dp))
+                  Text(text = "${task.totalTimeSpent} sec",
+                      fontSize = 18.sp,
+                      color = Blue900)
+                  IconButton(onClick = { navController.navigate(NavScreen.SubtaskDetail.route}) {
+                      Icon(
+                          Icons.Default.Menu,
+                          contentDescription = "Menu",
+                          modifier = Modifier.size(ButtonDefaults.IconSize)
+                      )
+                  }
+                  IconButton(onClick = {
+                      Log.d("ABCD", "taskId = ${task.id}")
+                      navController.navigate(NavScreen.CountingTime.route + "/${task.id}") 
+                  }){
+                      Icon(
+                          Icons.Default.PlayArrow,
+                          contentDescription = "PlayButton",
+                          modifier = Modifier.size(ButtonDefaults.IconSize)
+                      )
+                  } // iconbutton
+                } // if CompareDate
+            } // end Row
         }
     }
-
 }
 
 @Composable
@@ -302,6 +345,7 @@ private fun SummaryContent() {
                 modifier = Modifier.padding(bottom = 6.dp)
             )
         }
+        Spacer(modifier = Modifier.height(100.dp))
     }
     Column(
         horizontalAlignment = Alignment.End
@@ -326,8 +370,8 @@ fun DrawerContent(){
 
 //pass navcontroller here after creating the following 3 pages
 @Composable
-fun HomeBottomBar(){
-    val selectedIndex = remember { mutableStateOf(0) }
+fun HomeBottomBar(navController : NavController){
+    val selectedIndex = remember { mutableStateOf(1) }
     BottomNavigation(
         elevation = 10.dp
     ) {
@@ -344,6 +388,7 @@ fun HomeBottomBar(){
             selected = (selectedIndex.value == 0),
             onClick = {
                 selectedIndex.value = 0
+                navController.navigate(NavScreen.AllTasks.route)
             }
         )
 
@@ -359,6 +404,7 @@ fun HomeBottomBar(){
             selected = (selectedIndex.value == 1),
             onClick = {
                 selectedIndex.value = 1
+                navController.navigate(NavScreen.Home.route)
             }
         )
 
@@ -375,6 +421,7 @@ fun HomeBottomBar(){
             selected = (selectedIndex.value == 2),
             onClick = {
                 selectedIndex.value = 2
+                navController.navigate(NavScreen.Calendar.route)
             }
         )
     }
@@ -387,3 +434,4 @@ fun HomePreview() {
         Home(rememberNavController())
     }
 }
+

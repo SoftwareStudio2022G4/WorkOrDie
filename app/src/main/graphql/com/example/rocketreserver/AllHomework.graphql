@@ -1,0 +1,8 @@
+query AllHomework {
+  get_all_homework {
+    type
+    index
+    finished_people
+    total_time
+  }
+}

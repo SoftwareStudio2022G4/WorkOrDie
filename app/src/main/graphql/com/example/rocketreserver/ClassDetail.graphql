@@ -1,0 +1,8 @@
+query ClassDetail($type: CLASSTYPE!) {
+  class_detail(type: $type) {
+    type
+    index
+    finished_people
+    total_time
+  }
+}

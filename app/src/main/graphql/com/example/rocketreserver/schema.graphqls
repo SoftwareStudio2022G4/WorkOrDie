@@ -1,0 +1,42 @@
+type Query {
+  get_all_homework: [Homework]
+
+  class_detail(type: CLASSTYPE!): [Homework]
+
+  get_homework(type: CLASSTYPE!, index: Int!): Homework
+
+  get_classes: [CLASSTYPE]
+}
+
+type Mutation {
+  create_homework(type: CLASSTYPE!, index: Int!): [Homework]
+
+  addto_homework(type: CLASSTYPE!, index: Int!, finished_people: Int, total_time: Int): Homework
+
+  edit_homework(type: CLASSTYPE!, index: Int!, finished_people: Int!, total_time: Int!): Homework
+
+  delete_homework(type: CLASSTYPE!, index: Int!): [Homework]
+}
+
+type Homework {
+  type: CLASSTYPE
+
+  index: Int
+
+  finished_people: Int
+
+  total_time: Int
+}
+
+enum CLASSTYPE {
+  Computer_Architecture
+
+  Probability
+
+  Software_Studio
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

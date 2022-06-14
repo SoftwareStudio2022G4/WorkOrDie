@@ -5,10 +5,19 @@ import android.widget.EditText
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.colors
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -20,54 +29,56 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 import com.example.workordie.R
+import com.example.workordie.TaskViewModel
+import com.example.workordie.ui.CountDownTime.CountDownTimeViewModel
 import com.example.workordie.ui.CountDownTime.utils.TimeFormatUtils
+import com.example.workordie.ui.screen.NavScreen
 import com.example.workordie.ui.theme.WorkOrDieTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlin.math.cos
 import kotlin.math.sin
 
-/**
- * Description:
- * Home
- *
- * @author Alpinist Wang
- * Date:    2021/3/5
- */
 
 // Start building your app here!
 @Composable
-fun MyApp() {
+fun CountdownTimer(
+    navController : NavController,
+    taskViewModel: TaskViewModel,
+    pickedId: String?
+) {
     val viewModel: CountDownTimeViewModel = viewModel()
+    val scaffoldState : ScaffoldState = rememberScaffoldState(/*rememberDrawerState(DrawerValue.Closed)*/)
+
     Scaffold(
-        Modifier.fillMaxSize(),
+        scaffoldState = scaffoldState,
         topBar = {
             TopAppBar(
                 title = {
                     Text(
                         text = stringResource(id = R.string.app_name)
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigate(NavScreen.CountingTime.route + "/${pickedId}") }) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
                 }
             )
-        },
+        }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(start = 30.dp, end = 40.dp, top = 10.dp)
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-            ) {
-                Text(
-                    text = "Countdown",
-                    modifier = Modifier
-                        .padding(start = 30.dp, end = 40.dp, top = 10.dp)
-                )
-            }
+            Text(text = "Countdown", fontSize = 30.sp)
             CompletedText(viewModel)
             TimeLeftText(viewModel)
             ProgressCircle(viewModel)
@@ -75,6 +86,48 @@ fun MyApp() {
             Row {
                 StartButton(viewModel)
                 StopButton(viewModel)
+            }
+
+            // checkbox
+            for(i in 1..4){
+                val isChecked = remember { mutableStateOf(false) }
+                Row(
+                    modifier = Modifier
+                        .clickable(onClick = {
+                            isChecked.value = !isChecked.value // 點擊文字時也能變更勾選狀態
+                        })
+                        .padding(5.dp),
+                ) {
+                    Checkbox(
+                        checked = isChecked.value, // 是否勾選
+                        enabled = true, // 能否被變更
+                        onCheckedChange = { checked ->
+                            isChecked.value = checked
+                        },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = MaterialTheme.colors.primarySurface, // 勾選時顏色
+                            uncheckedColor = MaterialTheme.colors.primary, // 未勾選時顏色
+                        )
+                    )
+                    Text(
+                        text = "Subtask $i",
+                        color = MaterialTheme.colors.secondaryVariant,
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                }
+            }
+            Button(
+                onClick = {
+                    taskViewModel.updateTaskTimeSpent(viewModel.totalTimeSpent, pickedId!!.toInt())
+                    navController.navigate(NavScreen.FinishPopup.route + "/${pickedId}")
+                          },
+                modifier = Modifier
+                    .width(150.dp)
+                    .padding(16.dp)
+            ) {
+                Text(text = "finish")
             }
         }
     }
@@ -116,7 +169,11 @@ private fun StartButton(viewModel: CountDownTimeViewModel) {
             .width(150.dp)
             .padding(16.dp),
         enabled = viewModel.totalTime > 0,
-        onClick = viewModel.status::clickStartButton
+        onClick = viewModel.status::clickStartButton,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFFFBE8A6),
+            contentColor = Color.Black
+        )
     ) {
         Text(text = viewModel.status.startButtonDisplayString())
     }
@@ -129,14 +186,18 @@ private fun StopButton(viewModel: CountDownTimeViewModel) {
             .width(150.dp)
             .padding(16.dp),
         enabled = viewModel.status.stopButtonEnabled(),
-        onClick = viewModel.status::clickStopButton
+        onClick = viewModel.status::clickStopButton,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFFFBE8A6),
+            contentColor = Color.Black
+        )
     ) {
         Text(text = "Stop")
     }
 }
 
 @Composable
-fun ProgressCircle(viewModel:CountDownTimeViewModel) {
+fun ProgressCircle(viewModel: CountDownTimeViewModel) {
     // Circle diameter
     val size = 160.dp
     Box(contentAlignment = Alignment.Center) {
@@ -203,10 +264,10 @@ private fun CompletedText(viewModel:CountDownTimeViewModel) {
         color = MaterialTheme.colors.primary
     )
 }
-@Preview(showBackground = true)
-@Composable
-fun CountdownTimePreview() {
-    WorkOrDieTheme {
-        MyApp()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun CountdownTimePreview() {
+//    WorkOrDieTheme {
+//        CountdownTimer(rememberNavController())
+//    }
+//}
