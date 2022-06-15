@@ -1,5 +1,6 @@
 package com.example.workordie.ui.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -120,6 +121,7 @@ fun FinishPopupBody(
         //will handle onclick event after finish designing the counting time screen
         Button(
             onClick = {
+//                Log.d("abcd", "truck")
 //                val classtype = determineClassType(task.taskType)
 //                runBlocking{
 //                        launch{
@@ -132,6 +134,7 @@ fun FinishPopupBody(
 //                            )).execute()
 //                        }
 //                }
+//                Log.d("abcd", "erich")
                 viewModel.deleteSingleTaskTest(pickedId!!.toInt())
                 navController.navigate(NavScreen.Home.route)
             }
